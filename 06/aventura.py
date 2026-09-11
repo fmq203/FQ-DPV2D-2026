@@ -30,6 +30,14 @@ FONDOS = {
 }
 FONDO_POR_DEFECTO = (20, 30, 20)
 
+# Escenas que sin imagen propia reusan el fondo de otra escena (mismo lugar
+# en la historia, no hace falta duplicar el archivo).
+ALIAS_FONDO = {
+    "mono": "cueva",
+    "cofre": "cueva",
+    "tesoro": "cueva",
+}
+
 
 def cargar_imagen_fondo(nombre_escena):
     # Busca assets/fondos/<escena>.png o .jpg. Si no existe ninguna,
@@ -48,6 +56,9 @@ def cargar_imagen_fondo(nombre_escena):
 
 # Precargamos las imágenes de fondo una sola vez (quedan en caché por escena).
 IMAGENES_FONDO = {nombre: cargar_imagen_fondo(nombre) for nombre in FONDOS}
+for nombre, alias in ALIAS_FONDO.items():
+    if IMAGENES_FONDO.get(nombre) is None:
+        IMAGENES_FONDO[nombre] = IMAGENES_FONDO.get(alias)
 
 # ====== SPRITES ANIMADOS (objetos) ======
 # Cada carpeta en assets/objetos/ tiene los frames sueltos de una animación
