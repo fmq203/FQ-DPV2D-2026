@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Cruza la Calle</title>
+  <style>
+    body { background: #111; display: flex; justify-content: center; padding-top: 30px; }
+    canvas { border: 2px solid #444; }
+  </style>
+</head>
+<body>
+  <canvas id="juego" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("juego");
+    const ctx = canvas.getContext("2d");
+
+    const cell = 40;      // tamaño de cada celda de la grilla
+    const cols = 15;      // 600 / 40
+    const filas = 10;     // 400 / 40
+    const filaMeta = 0;   // arriba: pasto de llegada
+    const filaInicio = 9; // abajo: pasto de partida
+
+    let playerCol = 7, playerRow = filaInicio;
+    let puntos = 0;
+    let mensaje = "";
+    let mensajeTimer = 0;
+
+    // un carril por fila de calle (filas 1 a 8)
+    const carriles = [];
+    for (let fila = 1; fila <= 8; fila++) {
+      const dir = fila % 2 === 0 ? 1 : -1;       // alterna sentido
+      const velocidad = 1 + (fila % 4) * 0.6;     // alterna velocidad
+      const autos = [];
+      for (let i = 0; i < 4; i++) {
+        autos.push(i * 160 + fila * 15);
+      }
+      carriles.push({ fila, dir, velocidad, autos, ancho: 60, alto: 26 });
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowUp") playerRow -= 1;
+      if (e.key === "ArrowDown") playerRow += 1;
+      if (e.key === "ArrowLeft") playerCol -= 1;
+      if (e.key === "ArrowRight") playerCol += 1;
+      playerRow = Math.max(filaMeta, Math.min(filaInicio, playerRow));
+      playerCol = Math.max(0, Math.min(cols - 1, playerCol));
+    });
+
+    function reiniciarJugador() {
+      playerRow = filaInicio;
+      playerCol = 7;
+    }
+
+    function actualizar() {
+      // mover autos
+      for (const c of carriles) {
+        for (let i = 0; i < c.autos.length; i++) {
+          c.autos[i] += c.dir * c.velocidad;
+          if (c.dir > 0 && c.autos[i] > canvas.width) c.autos[i] = -c.ancho;
+          if (c.dir < 0 && c.autos[i] < -c.ancho) c.autos[i] = canvas.width;
+        }
+      }
+
+      // ¿llegaste a la meta?
+      if (playerRow === filaMeta) {
+        puntos += 1;
+        mensaje = "¡Cruzaste! +1";
+        mensajeTimer = 60;
+        reiniciarJugador();
+        return;
+      }
+
+      // ¿te chocó un auto?
+      const carril = carriles.find(c => c.fila === playerRow);
+      if (carril) {
+        const px = playerCol * cell + 5;
+        const py = playerRow * cell + 5;
+        const pAncho = cell - 10, pAlto = cell - 10;
+        for (const ax of carril.autos) {
+          const ay = playerRow * cell + (cell - carril.alto) / 2;
+          const choque = px < ax + carril.ancho && px + pAncho > ax &&
+                         py < ay + carril.alto && py + pAlto > ay;
+          if (choque) {
+            puntos -= 1;
+            mensaje = "¡Chocaste! -1";
+            mensajeTimer = 60;
+            reiniciarJugador();
+            break;
+          }
+        }
+      }
+
+      if (mensajeTimer > 0) mensajeTimer--;
+    }
+
+    function dibujar() {
+      // pasto arriba y abajo, calle en el medio
+      ctx.fillStyle = "#1e5c1e";
+      ctx.fillRect(0, filaMeta * cell, canvas.width, cell);
+      ctx.fillRect(0, filaInicio * cell, canvas.width, cell);
+      ctx.fillStyle = "#333";
+      ctx.fillRect(0, cell, canvas.width, (filaInicio - 1) * cell);
+
+      // líneas divisorias de carril
+      ctx.strokeStyle = "#666";
+      ctx.setLineDash([10, 10]);
+      for (let fila = 1; fila < filaInicio; fila++) {
+        ctx.beginPath();
+        ctx.moveTo(0, fila * cell);
+        ctx.lineTo(canvas.width, fila * cell);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // autos
+      ctx.fillStyle = "#ff3b3b";
+      for (const c of carriles) {
+        const ay = c.fila * cell + (cell - c.alto) / 2;
+        for (const ax of c.autos) {
+          ctx.fillRect(ax, ay, c.ancho, c.alto);
+        }
+      }
+
+      // jugador
+      ctx.fillStyle = "#00ccff";
+      ctx.fillRect(playerCol * cell + 5, playerRow * cell + 5, cell - 10, cell - 10);
+
+      // HUD
+      ctx.fillStyle = "white";
+      ctx.font = "20px monospace";
+      ctx.fillText("Puntos: " + puntos, 10, 24);
+      if (mensajeTimer > 0) {
+        ctx.font = "16px monospace";
+        ctx.fillText(mensaje, 10, 46);
+      }
+    }
+
+    function loop() {
+      actualizar();
+      dibujar();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

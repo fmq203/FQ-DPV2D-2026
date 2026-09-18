@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Cazador de Estrellas</title>
+  <style>
+    body { background: #111; display: flex; justify-content: center; padding-top: 30px; }
+    canvas { border: 2px solid #444; }
+  </style>
+</head>
+<body>
+  <canvas id="juego" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("juego");
+    const ctx = canvas.getContext("2d");
+
+    let x = 300; // posición del cazador
+    const velocidad = 5;
+
+    // estrella amarilla (vale 1 punto)
+    let estrellaX = 100, estrellaY = 0;
+
+    // estrella roja (vale 5 puntos, cae más rápido)
+    let rojaX = 400, rojaY = -200;
+
+    let puntos = 0;
+    let perdido = false;
+
+    const teclas = {};
+    document.addEventListener("keydown", e => teclas[e.key] = true);
+    document.addEventListener("keyup", e => teclas[e.key] = false);
+
+    // soporte táctil: el cazador sigue el dedo
+    function moverConTouch(e) {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      x = e.touches[0].clientX - rect.left;
+    }
+    canvas.addEventListener("touchstart", moverConTouch, { passive: false });
+    canvas.addEventListener("touchmove", moverConTouch, { passive: false });
+
+    function actualizar() {
+      if (perdido) return;
+
+      if (teclas["ArrowLeft"]) x -= velocidad;
+      if (teclas["ArrowRight"]) x += velocidad;
+      x = Math.max(20, Math.min(580, x)); // no salirse
+
+      // dificultad creciente: cae más rápido cuanto más puntos tenés
+      const caida = 2 + puntos * 0.2;
+
+      // la estrella amarilla cae
+      estrellaY += caida;
+      if (estrellaY > 400) { // se cayó sin atrapar
+        estrellaY = 0;
+        estrellaX = Math.random() * 580;
+        puntos -= 1;
+      }
+      if (Math.abs(estrellaX - x) < 30 && estrellaY > 360) { // atrapada
+        puntos += 1;
+        estrellaY = 0;
+        estrellaX = Math.random() * 580;
+      }
+
+      // la estrella roja cae el doble de rápido y vale más
+      rojaY += caida * 2;
+      if (rojaY > 400) {
+        rojaY = 0;
+        rojaX = Math.random() * 580;
+      }
+      if (Math.abs(rojaX - x) < 30 && rojaY > 360) {
+        puntos += 5;
+        rojaY = 0;
+        rojaX = Math.random() * 580;
+      }
+
+      if (puntos <= -3) perdido = true;
+    }
+
+    function dibujarEstrella(px, py, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(px, py, 10, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function dibujar() {
+      ctx.fillStyle = "#0a0a2e";
+      ctx.fillRect(0, 0, 600, 400);
+
+      dibujarEstrella(estrellaX, estrellaY, "#ffd700");
+      dibujarEstrella(rojaX, rojaY, "#ff3b3b");
+
+      ctx.fillStyle = "#00ccff";
+      ctx.fillRect(x - 25, 370, 50, 12);
+
+      ctx.fillStyle = "white";
+      ctx.font = "20px monospace";
+      ctx.fillText("Puntos: " + puntos, 10, 24);
+
+      if (perdido) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+        ctx.fillRect(0, 0, 600, 400);
+        ctx.fillStyle = "white";
+        ctx.font = "40px monospace";
+        ctx.fillText("Perdiste", 210, 190);
+        ctx.font = "20px monospace";
+        ctx.fillText("Puntos finales: " + puntos, 190, 230);
+      }
+    }
+
+    function loop() {
+      actualizar();
+      dibujar();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>
