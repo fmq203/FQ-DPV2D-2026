@@ -9,7 +9,7 @@ Se puede reemplazar pieza por pieza. **Todo asset externo se registra en
 | `fondos/` | `menu.png`, `rambla.png`, `mercado.png`, `tablado.png` | 900×450 px ideal. Otra proporción: se escala para cubrir y se recorta **alineada abajo** (el piso/horizonte queda abajo, el cielo se recorta) |
 | `sprites/` | `tano_idle.png` | Mirando a la **derecha**, fondo transparente; se dibuja a ~110 px de alto (escala 0.7–1.1 según la profundidad), apoyado en los pies |
 | `sprites/` | `tano_walk_0.png`, `tano_walk_1.png`, … | Frames de caminata consecutivos (opcional; cambia cada 6 ticks) |
-| `sprites/` | `<id del hotspot>.png` | Se ajusta al **alto** del rect del hotspot, apoyado abajo. Ids: `banco`, `tacho`, `pescador`, `yerbas`, `parrilla`, `parrillero`, `tendedero`, `gato`, `cartel`, `perro`, `contramaestre`, `bombo` |
+| `sprites/` | `<id del hotspot>.png` | Se ajusta al **alto** del rect del hotspot, apoyado abajo. Ids: `banco`, `tacho`, `pescador`, `yerbas` (hoy: rectángulo verde «FALTA»), `parrilla` (hoy: rectángulo rojo «FALTA»), `parrillero`, `tendedero`, `gato`, `cartel`, `perro`, `contramaestre`, `bombo` |
 | `objetos/` | `termo.png`, `mate.png`, `yerba.png`, `mate_cargado.png`, `mate_listo.png`, `diario.png`, `choripan.png` | Cuadrados (se escalan a 48×48 en el inventario; el mismo PNG se usa para el objeto suelto en la escena) |
 | `audio/` | `click, pickup, win, lose, talk, combine, nope, bombo` `.wav` | Ya incluidos (generados por código) |
 

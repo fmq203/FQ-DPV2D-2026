@@ -62,11 +62,25 @@ def make_background(room, target=(W, H)):
 def draw_prop(surf, kind, rect, color, sprite_id=None):
     """Dibuja un hotspot: sprites/<sprite_id>.png (alto = alto del rect, apoyado abajo) o placeholder."""
     img = load_png("sprites", sprite_id) if sprite_id and kind not in ("zone", "item") else None
+    if kind == "marker" and not img:
+        return _marker(surf, rect, color, sprite_id)
     if img:
         img = _fit_height(img, pygame.Rect(rect).height)
         surf.blit(img, img.get_rect(midbottom=pygame.Rect(rect).midbottom))
     else:
         _placeholder_prop(surf, kind, rect, color)
+
+
+def _marker(surf, rect, color, label):
+    """Recordatorio visible de un sprite pendiente: rectángulo de color con el id del hotspot.
+    Desaparece solo cuando se agrega assets/sprites/<id>.png."""
+    r = pygame.Rect(rect)
+    box = pygame.Surface(r.size, pygame.SRCALPHA)
+    box.fill((*color, 150))
+    surf.blit(box, r)
+    pygame.draw.rect(surf, color, r, 3)
+    txt = pygame.font.Font(None, 22).render(f"FALTA: {label}", True, (255, 255, 255))
+    surf.blit(txt, txt.get_rect(center=r.center))
 
 
 def make_icon(key, size=48):

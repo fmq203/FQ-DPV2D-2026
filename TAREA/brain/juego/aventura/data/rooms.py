@@ -88,7 +88,7 @@ ROOMS = {
         "start": (230, 430),
         "hotspots": [
             {"id": "yerbas", "name": "Puesto de yerba", "rect": (100, 260, 120, 80),
-             "stand": (240, 432), "art": ("zone", None),
+             "stand": (240, 432), "art": ("marker", (60, 200, 80)),  # placeholder: falta sprites/yerbas.png
              "acts": {
                  "Mirar": "Un puesto con paquetes de yerba hasta el techo. Hay para toda la nación. Algo húmeda: culpa de El Niño.",
                  "Hablar": "El vendedor está dormido, con la boca abierta. En boca cerrada no entran moscas, pero a él sí.",
@@ -97,7 +97,7 @@ ROOMS = {
                            "else": "Con un paquete alcanza. No soy un acaparador."},
              }},
             {"id": "parrilla", "name": "Parrilla", "rect": (380, 225, 160, 70),
-             "stand": (460, 420), "art": ("zone", None),
+             "stand": (460, 420), "art": ("marker", (220, 50, 50)),  # placeholder: falta sprites/parrilla.png
              "acts": {
                  "Mirar": {"if_flag": "parrilla_prendida",
                            "say": "La parrilla chisporrotea. Huele a gloria.",
