@@ -52,10 +52,10 @@ def _pescador(ctx):
                   "Pescador", [("Ojalá.", "start")]),
         "carnaval": N("Seguro. Pero el uruguayo canta bajo la lluvia, tira el paraguas y sigue.", "Pescador",
                       [("Tiene razón.", "start")]),
-        "bombo": N("Ah, vi unos tipos con un bombo rumbo al Tablado de Barrio Sur, pasando el Mercado.",
+        "bombo": N("Ah, vi unos tipos con un bombo rumbo al Museo del Carnaval, pasando el Mercado.",
                    "Pescador", [("¿Y cómo hago para recuperarlo?", "quien"),
                                 ("¿Cómo llego?", "ruta")]),
-        "ruta": N("Seguí la rambla hasta el Mercado del Puerto y después al Tablado.", "Pescador",
+        "ruta": N("Seguí la rambla hasta el Mercado del Puerto y después al Museo del Carnaval.", "Pescador",
                   [("Gracias, voy para allá.", None)]),
         "quien": N("Lo cuida un tal Contramaestre. Solo habla con quien comparte un mate... "
                    "y hay un perro hambriento que no deja pasar a nadie.", "Pescador",

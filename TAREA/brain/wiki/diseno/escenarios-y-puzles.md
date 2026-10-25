@@ -10,7 +10,7 @@ updated: 2026-10-25
 **Premisa:** faltan 2 días para el Carnaval; robaron el bombo de la murga "Los Sin Tablado". **Tano**, aspirante a murguista, debe recuperarlo (tono cómico, referencias uruguayas: mate, termo, chori al pan, clima de El Niño (ropa que no se seca), candombe, payada).
 
 ## Escenarios (datos en `juego/aventura/data/rooms.py`)
-Rambla de Pocitos ⇄ Mercado del Puerto ⇄ Tablado de Barrio Sur. Cada uno con zona navegable (ver [[walkmask]], [[mascara-caminabilidad]]) y hotspots definidos como datos (rect, punto donde Tano se para, respuestas por verbo, banderas `show_if`/`hide_if`/`needs`). Salidas = hotspots con `exit`. Ver [[hotspot]].
+Rambla de Barrio Sur ⇄ Mercado del Puerto ⇄ Museo del Carnaval (con su tablado). Cada uno con zona navegable (ver [[walkmask]], [[mascara-caminabilidad]]) y hotspots definidos como datos (rect, punto donde Tano se para, respuestas por verbo, banderas `show_if`/`hide_if`/`needs`). Salidas = hotspots con `exit`. Ver [[hotspot]].
 
 ## Puzles
 1. **Mate (combinación en 2 pasos):** termo + mate (Rambla) + yerba (Mercado): `yerba + mate → mate cargado`, `mate cargado + termo → mate listo`. Ver [[inventario-y-combinacion]].

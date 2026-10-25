@@ -18,7 +18,7 @@ TANO = (255, 220, 60)  # color del texto de Tano
 ROOMS = {
     # ------------------------------------------------------------------ #
     "rambla": {
-        "title": "Rambla de Pocitos",
+        "title": "Rambla de Barrio Sur",
         "walk": [(60, 295, 335, 35), (0, 330, 440, 40), (0, 370, 495, 40), (0, 410, 545, 40)],  # la vereda en perspectiva
         "start": (200, 390),
         "hotspots": [
@@ -132,17 +132,17 @@ ROOMS = {
                  "Hablar": "Miau. (Traducción: 'pagame la entrada'.)",
                  "Agarrar": "Me mira con desprecio felino. Mejor no.",
              }},
-            {"id": "a_rambla", "name": "Rambla de Pocitos", "rect": (0, 380, 120, 70),
+            {"id": "a_rambla", "name": "Rambla de Barrio Sur", "rect": (0, 380, 120, 70),
              "stand": (205, 438), "exit": ("rambla", 330), "art": ("zone", None),
              "acts": {"Mirar": "De vuelta hacia la rambla."}},
-            {"id": "a_tablado", "name": "Tablado de Barrio Sur", "rect": (780, 380, 120, 70),
+            {"id": "a_tablado", "name": "Museo del Carnaval", "rect": (780, 380, 120, 70),
              "stand": (700, 438), "exit": ("tablado", 70), "art": ("zone", None),
-             "acts": {"Mirar": "Hacia el Tablado, en Barrio Sur."}},
+             "acts": {"Mirar": "Hacia el Museo del Carnaval, donde está el tablado."}},
         ],
     },
     # ------------------------------------------------------------------ #
     "tablado": {
-        "title": "Tablado de Barrio Sur",
+        "title": "Museo del Carnaval",
         "walk": [(0, 385, 900, 65), (20, 300, 170, 85), (720, 300, 160, 85)],  # franja delante del público + las dos calles
         "start": (70, 395),
         "hotspots": [

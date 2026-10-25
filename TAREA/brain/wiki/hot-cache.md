@@ -8,7 +8,7 @@ updated: 2026-10-25
 # Estado actual (2026-10-25)
 
 **Hecho — "El Murguista" jugable de punta a punta** (avance ~85%)
-- 3 escenarios conectados (Rambla de Pocitos, Mercado del Puerto, Tablado de Barrio Sur) con zona navegable y click-to-walk ([[walkmask]]).
+- 3 escenarios conectados (Rambla de Barrio Sur, Mercado del Puerto, Museo del Carnaval) con zona navegable y click-to-walk ([[walkmask]]).
 - FSM de verbos (Mirar/Agarrar/Usar/Hablar/Dar) + comando armado ([[fsm-verbos]]), inventario con combinación ([[inventario-y-combinacion]]), diálogos con opciones por mouse y duelo de payada ([[sistema-dialogos]]), 3 puzles ([[escenarios-y-puzles]]).
 - Menú, Game Over (3 errores en la payada) y Victoria (coger el bombo), con volver al menú; sonido en toda interacción.
 - Fondos: los 4 son pixel art (Pixellab). Personajes y objetos siguen como placeholders geométricos por código (`aventura/art.py`) por falta de generaciones gratuitas. Los atajos F1/F2 ya fueron eliminados.

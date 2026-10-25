@@ -19,8 +19,8 @@
 ## 📜 La historia
 
 Faltan dos días para el Carnaval y **robaron el bombo** de la murga *Los Sin Tablado*.
-**Tano**, aspirante a murguista, tiene que recorrer la **Rambla de Pocitos**, el **Mercado del Puerto**
-y el **Tablado de Barrio Sur** para recuperarlo... bajo la lluvia de El Niño, con la ropa que no se seca
+**Tano**, aspirante a murguista, tiene que recorrer la **Rambla de Barrio Sur**, el **Mercado del Puerto**
+y el **Museo del Carnaval** para recuperarlo... bajo la lluvia de El Niño, con la ropa que no se seca
 y un perro que solo entiende de **chori al pan**.
 
 > *«Y encima llueve desde que empezó la primavera... gracias, Niño.»* — Tano
@@ -61,11 +61,11 @@ Point-and-click al estilo **Monkey Island**: elegís un verbo, después el objet
 
 <table>
 <tr>
-<td align="center"><img src="capturas/rambla.png" width="440"><br><sub><b>Rambla de Pocitos</b></sub></td>
+<td align="center"><img src="capturas/rambla.png" width="440"><br><sub><b>Rambla de Barrio Sur</b></sub></td>
 <td align="center"><img src="capturas/mercado.png" width="440"><br><sub><b>Mercado del Puerto</b></sub></td>
 </tr>
 <tr>
-<td align="center"><img src="capturas/tablado.png" width="440"><br><sub><b>Tablado de Barrio Sur</b></sub></td>
+<td align="center"><img src="capturas/tablado.png" width="440"><br><sub><b>Museo del Carnaval</b></sub></td>
 <td align="center"><img src="capturas/payada.png" width="440"><br><sub><b>El duelo de payada</b></sub></td>
 </tr>
 </table>

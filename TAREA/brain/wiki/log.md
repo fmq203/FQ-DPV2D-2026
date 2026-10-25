@@ -49,3 +49,4 @@
 - 2026-10-25 | update | assets-lista (tablado pixel art)
 - 2026-10-25 | update | assets-lista (menú pixel art)
 - 2026-10-25 | create | README público (TAREA/README.md) y capturas; regla en AGENTS.md
+- 2026-10-25 | update | escenarios-y-puzles, hot-cache, assets-lista (nombres: Rambla de Barrio Sur, Museo del Carnaval)
