@@ -7,11 +7,12 @@ updated: 2026-10-25
 
 # Estado actual (2026-10-25)
 
-**Hecho — "El Murguista" jugable de punta a punta** (avance ~75%)
+**Hecho — "El Murguista" jugable de punta a punta** (avance ~85%)
 - 3 escenarios conectados (Rambla de Pocitos, Mercado del Puerto, Tablado de Barrio Sur) con zona navegable y click-to-walk ([[walkmask]]).
 - FSM de verbos (Mirar/Agarrar/Usar/Hablar/Dar) + comando armado ([[fsm-verbos]]), inventario con combinación ([[inventario-y-combinacion]]), diálogos con opciones por mouse y duelo de payada ([[sistema-dialogos]]), 3 puzles ([[escenarios-y-puzles]]).
 - Menú, Game Over (3 errores en la payada) y Victoria (coger el bombo), con volver al menú; sonido en toda interacción.
-- Arte 100% placeholder geométrico por código (`aventura/art.py`). Los atajos F1/F2 ya fueron eliminados.
+- Fondos: los 4 son pixel art (Pixellab). Personajes y objetos siguen como placeholders geométricos por código (`aventura/art.py`) por falta de generaciones gratuitas. Los atajos F1/F2 ya fueron eliminados.
+- **README público** en `TAREA/README.md` con capturas (`tools/capturas.py`); se actualiza según [[checklist-entrega]] y la regla §8 de `AGENTS.md`.
 - `tests/smoke_test.py` juega la partida completa (victoria y derrota) con eventos reales: en verde. `juego/.venv` creado.
 
 **Siguiente** (entrega final 6-nov-2026)

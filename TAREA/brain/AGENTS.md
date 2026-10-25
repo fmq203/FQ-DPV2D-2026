@@ -24,6 +24,8 @@ Idioma de trabajo y de código/comentarios: español (como el curso).
 | `wiki/motor/` | Una página por módulo de `engine/` | agente |
 | `wiki/diseno/` | Arquitectura y diseño del juego | agente |
 | `wiki/entrega/` | Checklist, README, assets, guion de video | agente |
+| `../README.md` (= `TAREA/README.md`) | README **público** que se ve en GitHub (diseño inspirado en el juego) — ver §8 | agente |
+| `../capturas/` | Capturas del juego usadas por el README (se regeneran con `tools/capturas.py`) | agente (script) |
 | `juego/` | Proyecto ejecutable (`engine/` + `aventura/` + `tests/`) | agente |
 | `tools/lint.py` | Lint del brain (links, index, frontmatter) | agente |
 
@@ -38,7 +40,7 @@ Idioma de trabajo y de código/comentarios: español (como el curso).
 - Frontmatter obligatorio en `wiki/**`: `title`, `type` (requisito|clase|motor|diseno|entrega), `sources` (rutas en `raw/` o `juego/`), `updated` (AAAA-MM-DD).
 - Enlaces internos con wikilinks: doble corchete + slug (slug = nombre de archivo sin `.md`).
 - Toda página nueva → agregar línea a `wiki/index.md` y una entrada a `wiki/log.md` (`AAAA-MM-DD | acción | página`).
-- Al cerrar una sesión: actualizar `wiki/hot-cache.md` (hecho / siguiente / bloqueos) y, si hubo aprendizajes, `LEARNINGS.md`.
+- Al cerrar una sesión: actualizar `wiki/hot-cache.md` (hecho / siguiente / bloqueos), el **README público** (§8) y, si hubo aprendizajes, `LEARNINGS.md`.
 - Operaciones nombradas: **ingest** (incorporar una fuente nueva a `raw/` y compilarla en wiki), **query** (responder citando páginas), **lint** (huérfanos, links rotos, contradicciones, páginas fuera de `index.md`).
 
 ## 5. Restricciones duras
@@ -55,6 +57,17 @@ Idioma de trabajo y de código/comentarios: español (como el curso).
 - Correr el juego: `cd juego && python -m aventura.main`
 - Prueba de humo (sin ventana): `cd juego && python tests/smoke_test.py`. Correrla antes de dar algo por terminado y ampliarla con cada feature.
 - Lint del brain: `python3 tools/lint.py`. Correrlo después de crear o mover páginas.
+- Regenerar capturas del README: `juego/.venv/bin/python tools/capturas.py` (desde `brain/`).
 
 ## 7. Fechas clave
 Parcial 23-oct-2026 (ya pasó, esperado 50%). **Entrega final 6-nov-2026** (GitLab público + README + doc de diseño + lista de assets + video 15–40 s + defensa).
+
+## 8. README público (`TAREA/README.md`)
+Es la cara del proyecto en GitHub: **siempre** debe reflejar el estado real. Actualizarlo en la misma sesión en que cambie algo de lo siguiente (no dejarlo para después):
+- **Bloque «Estado del proyecto»** (entre `<!-- ESTADO:INICIO -->` y `<!-- ESTADO:FIN -->`): fecha de última actualización, % de avance y la tabla de requisitos (✅ hecho / ⏳ pendiente). Mantenerlo coherente con `wiki/hot-cache.md`.
+- **Qué tiene / historia / cómo se juega / spoiler:** si se agregan o cambian escenarios, puzles, verbos, ítems, controles o la condición de victoria/derrota.
+- **Cómo correrlo:** si cambian dependencias, comandos o la versión de Python.
+- **Capturas:** tras cambios visibles (arte nuevo, sprites, UI) correr `tools/capturas.py` y revisar que las imágenes se vean bien.
+- **Créditos y assets:** coherente con `wiki/entrega/assets-lista.md`; nunca incluir correos ni datos personales de terceros (el repo es público).
+- Mantener el estilo del juego: título en amarillo/azul sobre fondo oscuro, emojis con moderación, tono humorístico uruguayo, sin romper el formato (tablas, `<details>` para spoilers).
+- No hace falta frontmatter ni wikilinks (no es una página de `wiki/`); usar links relativos de GitHub.
