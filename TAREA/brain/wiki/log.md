@@ -1,0 +1,50 @@
+# Log (append-only)
+
+- 2026-10-25 | ingest | clases/clase-1-4-fundamentos
+- 2026-10-25 | ingest | clases/clase-5-sprites-sonido-spritesheets
+- 2026-10-25 | ingest | clases/clase-6-aventura-grafica
+- 2026-10-25 | ingest | clases/clase-8-reestructuracion-motor
+- 2026-10-25 | ingest | diseno/arquitectura-juego
+- 2026-10-25 | ingest | diseno/escenarios-y-puzles
+- 2026-10-25 | ingest | diseno/fsm-verbos
+- 2026-10-25 | ingest | diseno/inventario-y-combinacion
+- 2026-10-25 | ingest | diseno/mascara-caminabilidad
+- 2026-10-25 | ingest | diseno/sistema-dialogos
+- 2026-10-25 | ingest | entrega/assets-lista
+- 2026-10-25 | ingest | entrega/checklist-entrega
+- 2026-10-25 | ingest | entrega/readme-plantilla
+- 2026-10-25 | ingest | entrega/video-guion
+- 2026-10-25 | ingest | motor/asset-manager
+- 2026-10-25 | ingest | motor/audio
+- 2026-10-25 | ingest | motor/cursor
+- 2026-10-25 | ingest | motor/dialogue-manager
+- 2026-10-25 | ingest | motor/game-loop
+- 2026-10-25 | ingest | motor/game-object
+- 2026-10-25 | ingest | motor/hotspot
+- 2026-10-25 | ingest | motor/inventory
+- 2026-10-25 | ingest | motor/modulos-no-usados
+- 2026-10-25 | ingest | motor/recorder
+- 2026-10-25 | ingest | motor/scene-ui
+- 2026-10-25 | ingest | requisitos/cambios-al-motor
+- 2026-10-25 | ingest | requisitos/entrega-y-defensa
+- 2026-10-25 | ingest | requisitos/requisitos-comunes
+- 2026-10-25 | ingest | requisitos/tarea-requisitos-minimos
+- 2026-10-25 | init | AGENTS.md, MEMORY.md, decisions.md, LEARNINGS.md, raw/, juego/engine/
+- 2026-10-25 | init | hot-cache
+- 2026-10-25 | build | juego/aventura esqueleto (menu, game, game_over, victory, SoundButton, sonidos generados)
+- 2026-10-25 | review | revisión general: inventario horizontal, cursor, SoundButton, smoke test, lint
+- 2026-10-25 | move | requisitos/decisions-motor-pendiente -> motor/cambios-al-motor
+- 2026-10-25 | re-ingest | clase-5-sprites-sonido-spritesheets, clase-1-4-fundamentos (lectura completa)
+- 2026-10-25 | build | juego completo "El Murguista": 3 escenarios, FSM de verbos, walkmask, combinación, diálogos con mouse, payada, tests de partida completa
+- 2026-10-25 | create | walkmask
+- 2026-10-25 | update | escenarios-y-puzles, fsm-verbos, mascara-caminabilidad, inventario-y-combinacion, sistema-dialogos, arquitectura-juego, cambios-al-motor, inventory, dialogue-manager, assets-lista, hot-cache
+- 2026-10-25 | update | escenarios-y-puzles (chori al pan, chistes de El Niño)
+- 2026-10-25 | update | escenarios-y-puzles (dichos uruguayos), fsm-verbos (verbo Agarrar)
+- 2026-10-25 | update | assets-lista (estructura de PNG con fallback a placeholder)
+- 2026-10-25 | update | assets-lista (skyline_rambla)
+- 2026-10-25 | update | assets-lista (rambla.png como fondo completo; skyline anterior eliminado)
+- 2026-10-25 | update | assets-lista (rambla simplificada)
+- 2026-10-25 | update | assets-lista (rambla pixel art Pixellab), escenarios-y-puzles
+- 2026-10-25 | update | assets-lista (mercado pixel art)
+- 2026-10-25 | update | assets-lista (tablado pixel art)
+- 2026-10-25 | update | assets-lista (menú pixel art)
