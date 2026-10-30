@@ -49,20 +49,52 @@ Los escenarios están conectados en línea (Rambla ⇄ Mercado ⇄ Museo) median
 
 ## 4. Puzles
 
-```
-Rambla:   termo ─┐   mate ─┐                     diario (tacho)
-                 │         │                          │
-Mercado:         │  yerba + mate = mate cargado       │   Usar termo con gato → el gato se va
-                 ├─ mate cargado + termo = MATE LISTO │   Agarrar leña
-                 │  (el termo se conserva)            diario + leña = FOGATA
-                 └──────────────────────────────▶ Usar fogata con parrilla → chorizo + pan
-                                                      Usar chorizo con parrilla → ⏱ asar
-                                                      Agarrar a tiempo → chorizo asado
-                                                      chorizo asado + pan = CHORI AL PAN
-Museo:   Dar chori al perro → se va a dormir la siesta → libera el paso → Dar mate listo al Contramaestre
-                                     │
-                             PAYADA (4 versos) ──▶ bombo ──▶ VICTORIA
-                                     └── 3 errores ──▶ GAME OVER (con "Reintentar payada")
+```mermaid
+flowchart TD
+    subgraph R["🌊 Rambla de Barrio Sur"]
+        termo["Termo<br/>(banco)"]
+        mate["Mate<br/>(muro)"]
+        diario["Diario<br/>(tacho)"]
+    end
+
+    subgraph M["🏛️ Mercado del Puerto"]
+        yerba["Yerba<br/>(puesto)"]
+        cargado["Mate cargado"]
+        listo(["MATE LISTO"])
+        gato["Usar termo con gato<br/>→ el gato se va"]
+        lena["Agarrar leña"]
+        fogata["Fogata armada"]
+        parrilla["Usar fogata con parrilla<br/>→ chorizo + pan"]
+        asar{"Usar chorizo con parrilla<br/>⏱ ¿cuándo lo saco?"}
+        asado["Chorizo asado"]
+        chori(["CHORI AL PAN"])
+    end
+
+    subgraph T["🎭 Museo del Carnaval"]
+        perro["Dar chori al perro<br/>→ se va a dormir la siesta"]
+        contra["Dar mate listo<br/>al Contramaestre"]
+        payada{"PAYADA<br/>4 versos"}
+        bombo["Agarrar el bombo"]
+        victoria(["🏆 VICTORIA"])
+        gameover(["💀 GAME OVER"])
+    end
+
+    yerba --> cargado
+    mate --> cargado
+    cargado --> listo
+    termo -- "agua<br/>(el termo se conserva)" --> listo
+    termo --> gato --> lena
+    diario --> fogata
+    lena --> fogata --> parrilla --> asar
+    asar -- "antes de 8 s: crudo" --> asar
+    asar -- "8 a 18 s: a punto" --> asado
+    asar -- "después de 18 s: quemado<br/>(el parrillero da otro)" --> asar
+    asado -- "+ pan" --> chori
+    chori --> perro --> contra
+    listo --> contra --> payada
+    payada -- "menos de 3 errores" --> bombo --> victoria
+    payada -- "3 errores" --> gameover
+    gameover -. "Reintentar payada" .-> payada
 ```
 
 1. **El mate (combinación en dos pasos):** objetos repartidos en dos escenarios, para obligar a explorar.
