@@ -1,0 +1,1 @@
+imageio-ffmpeg  # solo para tools/grabar_video.py (ffmpeg portátil); el juego no lo necesita

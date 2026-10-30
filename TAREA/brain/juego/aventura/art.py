@@ -59,13 +59,16 @@ def make_background(room, target=(W, H)):
     return bg if target == (W, H) else pygame.transform.scale(bg, target)
 
 
-def draw_prop(surf, kind, rect, color, sprite_id=None):
-    """Dibuja un hotspot: sprites/<sprite_id>.png (alto = alto del rect, apoyado abajo) o placeholder."""
+def draw_prop(surf, kind, rect, color, sprite_id=None, flip=False):
+    """Dibuja un hotspot: sprites/<sprite_id>.png (alto = alto del rect, apoyado abajo) o placeholder.
+    flip=True lo espeja (p. ej. un animal que se va caminando hacia el otro lado)."""
     img = load_png("sprites", sprite_id) if sprite_id and kind not in ("zone", "item") else None
     if kind == "marker" and not img:
         return _marker(surf, rect, color, sprite_id)
     if img:
         img = _fit_height(img, pygame.Rect(rect).height)
+        if flip:
+            img = pygame.transform.flip(img, True, False)
         surf.blit(img, img.get_rect(midbottom=pygame.Rect(rect).midbottom))
     else:
         _placeholder_prop(surf, kind, rect, color)
@@ -235,9 +238,11 @@ def _placeholder_prop(surf, kind, rect, color):
         pygame.draw.rect(surf, color, (r.x, r.y + r.h * 0.25, r.w, r.h * 0.5))
         pygame.draw.ellipse(surf, (240, 230, 200), (r.x, r.y, r.w, r.h * 0.5))
         pygame.draw.ellipse(surf, (0, 0, 0), (r.x, r.y, r.w, r.h * 0.5), 2)
-    elif kind == "item":  # objeto suelto: se dibuja como su ícono de inventario
-        icon = make_icon(color)
-        surf.blit(pygame.transform.smoothscale(icon, r.size), r)
+    elif kind == "item":  # objeto suelto: su ícono de inventario, cuadrado y apoyado abajo
+        side = min(r.w, r.h)
+        img = load_png("objetos", color)
+        icon = _scaled(img, (side, side)) if img else make_icon(color, side)
+        surf.blit(icon, icon.get_rect(midbottom=r.midbottom))
     elif kind == "clothes":  # tendedero con ropa goteando
         pygame.draw.line(surf, (60, 60, 60), (r.x, r.y + 10), (r.right, r.y + 20), 2)
         for i, c in enumerate(((220, 80, 80), (80, 140, 220), (240, 220, 90), (150, 200, 120))):

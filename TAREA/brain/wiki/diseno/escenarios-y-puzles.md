@@ -2,7 +2,7 @@
 title: Escenarios, hotspots y puzles
 type: diseno
 sources: [juego/aventura/data/rooms.py, juego/aventura/data/dialogs.py, juego/aventura/data/items.py]
-updated: 2026-10-25
+updated: 2026-10-30
 ---
 
 # Escenarios, hotspots y puzles — "El Murguista" (Montevideo)
@@ -14,8 +14,16 @@ Rambla de Barrio Sur ⇄ Mercado del Puerto ⇄ Museo del Carnaval (con su tabla
 
 ## Puzles
 1. **Mate (combinación en 2 pasos):** termo + mate (Rambla) + yerba (Mercado): `yerba + mate → mate cargado`, `mate cargado + termo → mate listo`. Ver [[inventario-y-combinacion]].
-2. **Chori al pan:** diario (tacho de la Rambla) → *Dar* al parrillero (o por diálogo) → chori al pan → *Dar* al perro del Tablado, que libera el paso.
-3. **Payada (duelo, diálogo con opciones):** *Dar* el mate al Contramaestre. 4 versos, 3 opciones cada uno (una rima bien); **3 errores = Game Over**. Ganar → aparece el bombo → *Agarrar* → **Victoria**. Ver [[sistema-dialogos]].
+2. **Chori al pan — mini-reto de la parrilla** (sugerencia del docente: "hacer el chori en la parrilla de la pantalla 2"):
+   - *Usar* termo con el gato, que duerme sobre la leña y odia el agua; sale corriendo (salida animada con `leave`) y así se puede *Agarrar* la leña.
+   - diario + leña = fogata armada.
+   - *Usar* la fogata con la parrilla: el parrillero pone el fósforo y da chorizo + pan.
+   - *Usar* el chorizo con la parrilla arranca el temporizador `chorizo` (`TIMERS` en `rooms.py`): a punto a los 8 s, quemado a los 18 s.
+   - *Agarrar* a tiempo da el chorizo asado; si está quemado, el parrillero da otro.
+   - chorizo asado + pan = chori al pan → *Dar* al perro del Museo, que libera el paso.
+
+   El termo **se conserva** al cebar el mate (3.er elemento de la receta), para que no haya callejón sin salida.
+3. **Payada (duelo, diálogo con opciones):** *Dar* el mate al Contramaestre. 4 versos, 3 opciones cada uno (una rima bien); **3 errores = Game Over**, con botón **Reintentar payada** (vuelve al punto de control guardado al aceptar el duelo). Ganar → aparece el bombo → *Agarrar* → **Victoria**. Ver [[sistema-dialogos]].
 
 Diálogos con opciones múltiples: Pescador (pista), Parrillero (diario / chori al pan), Contramaestre, payada. Guion/humor ajustable en `data/dialogs.py`. Ver [[fsm-verbos]].
 

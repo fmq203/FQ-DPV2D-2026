@@ -7,13 +7,23 @@ Hotspot:
   show_if / hide_if : flag que lo muestra / oculta
   needs, blocked    : flag requerido para interactuar y mensaje si falta
   exit              : (cuarto, x_de_aparición) -> hotspot de salida
+  leave             : {to_x, speed, hop} -> al activarse hide_if, se va caminando hasta x=to_x
+                      (en vez de desaparecer de golpe); hop = altura de los saltitos
+  sprite_if         : (flag, id) o lista de ellas -> con el flag se dibuja sprites/<id>.png (gana la última que se cumpla)
   acts              : tabla (verbo | "Verbo:item") -> resultado
 Resultado: str (Tano lo dice) o dict con
-  say (str|list|(hablante, texto)), give, take, flag, talk, end ("victory"),
-  sound, y if_flag/if_item + "else" para resultados condicionales.
+  say (str|list|(hablante, texto)), give (key|lista), take, flag, unflag (lista), talk, end ("victory"),
+  sound, timer / timer_stop (ver TIMERS), y if_flag/if_flag_not + "else" para resultados condicionales.
 """
 
 TANO = (255, 220, 60)  # color del texto de Tano
+
+# Temporizadores (mini-retos de tiempo): nombre -> (escenario, [(frames, flag, aviso de Tano)]).
+# A 60 fps: el chorizo está a punto a los 8 s y se quema a los 18 s (aunque Tano se vaya del Mercado).
+TIMERS = {
+    "chorizo": ("mercado", [(480, "chorizo_a_punto", "¡Huele a gloria! El chorizo ya está a punto."),
+                            (1080, "chorizo_quemado", "¡Uh! Huele a quemado... ¡el chorizo!")]),
+}
 
 ROOMS = {
     # ------------------------------------------------------------------ #
@@ -57,7 +67,7 @@ ROOMS = {
                            "say": "Un mate vacío. Es lo que hay, valor. Ahora a conseguir con qué llenarlo."},
              }},
             {"id": "tacho", "name": "Tacho de basura", "rect": (390, 340, 56, 80),
-             "stand": (440, 435), "art": ("bin", (95, 110, 95)),
+             "stand": (440, 435), "art": ("bin", (95, 110, 95)), "sprite_if": ("diario_cogido", "tacho_vacio"),
              "acts": {
                  "Mirar": "Un tacho de basura. Asoma un diario viejo.",
                  "Agarrar": {"give": "diario", "flag": "diario_cogido",
@@ -88,7 +98,7 @@ ROOMS = {
         "start": (230, 430),
         "hotspots": [
             {"id": "yerbas", "name": "Puesto de yerba", "rect": (100, 260, 120, 80),
-             "stand": (240, 432), "art": ("marker", (60, 200, 80)),  # placeholder: falta sprites/yerbas.png
+             "stand": (240, 432), "art": ("marker", (60, 200, 80)),  # sin sprites/yerbas.png: rectángulo «FALTA»
              "acts": {
                  "Mirar": "Un puesto con paquetes de yerba hasta el techo. Hay para toda la nación. Algo húmeda: culpa de El Niño.",
                  "Hablar": "El vendedor está dormido, con la boca abierta. En boca cerrada no entran moscas, pero a él sí.",
@@ -96,12 +106,41 @@ ROOMS = {
                            "say": "Tomo un paquete de yerba. Dejo unos pesos en el mostrador.",
                            "else": "Con un paquete alcanza. No soy un acaparador."},
              }},
-            {"id": "parrilla", "name": "Parrilla", "rect": (380, 225, 160, 70),
-             "stand": (460, 420), "art": ("marker", (220, 50, 50)),  # placeholder: falta sprites/parrilla.png
+            {"id": "parrilla", "name": "Parrilla", "rect": (395, 262, 140, 55),
+             "stand": (460, 420), "art": ("marker", (220, 50, 50)),  # sin sprites/parrilla.png: rectángulo «FALTA»
+             "sprite_if": [("parrilla_prendida", "parrilla_prendida"),       # gana la última que se cumple
+                           ("chorizo_en_parrilla", "parrilla_chorizo_crudo"),
+                           ("chorizo_a_punto", "parrilla_chorizo_a_punto"),
+                           ("chorizo_quemado", "parrilla_chorizo_quemado")],
              "acts": {
-                 "Mirar": {"if_flag": "parrilla_prendida",
-                           "say": "La parrilla chisporrotea. Huele a gloria.",
-                           "else": "La parrilla está fría. Sin fuego no hay chori."},
+                 "Mirar": {"if_flag": "chorizo_quemado", "say": "Un carbón con forma de chorizo. Me distraje.",
+                           "else": {"if_flag": "chorizo_a_punto", "say": "¡Dorado y jugoso! Hay que sacarlo YA.",
+                           "else": {"if_flag": "chorizo_en_parrilla",
+                                    "say": "El chorizo se está haciendo. Todavía crudo: paciencia.",
+                           "else": {"if_flag": "parrilla_prendida", "say": "Fuego prendido. Ahora falta el chorizo.",
+                                    "else": "La parrilla está fría. Para prender el fuego hace falta papel... y algo que arda en serio."}}}},
+                 "Usar:lena_papel": {"if_flag_not": "parrilla_prendida", "take": "lena_papel",
+                                     "flag": "parrilla_prendida", "give": ["chorizo", "pan"], "sound": "combine",
+                                     "say": ["Acomodo el papel abajo y la leña arriba...",
+                                             ("Parrillero", "¡Eso es armar un fuego! Le tiro un fósforo y listo."),
+                                             ("Parrillero", "Tomá un chorizo y un pan. Asalo vos, que yo tengo la muñeca abombada.")],
+                                     "else": "El fuego ya está prendido."},
+                 "Usar:diario": "Papel solo prende y se apaga en un segundo. Necesito leña para que agarre.",
+                 "Usar:lena": "Leña sola no prende: falta algo para encenderla. ¿Papel?",
+                 "Usar:chorizo": {"if_flag": "parrilla_prendida", "take": "chorizo", "flag": "chorizo_en_parrilla",
+                                  "timer": "chorizo",
+                                  "say": "Pongo el chorizo en la parrilla. Ni crudo ni carbón: hay que sacarlo en el momento justo.",
+                                  "else": "Sin fuego no se asa nada."},
+                 "Usar:pan": "Primero el chorizo. El pan espera.",
+                 "Agarrar": {"if_flag": "chorizo_quemado", "unflag": ["chorizo_en_parrilla", "chorizo_a_punto", "chorizo_quemado"],
+                             "timer_stop": "chorizo", "give": "chorizo", "sound": "nope",
+                             "say": ["Saco un carbón con forma de chorizo...",
+                                     ("Parrillero", "¡Te distrajiste, botija! Tomá otro, y esta vez sacalo a tiempo.")],
+                             "else": {"if_flag": "chorizo_a_punto", "unflag": ["chorizo_en_parrilla", "chorizo_a_punto"],
+                                      "timer_stop": "chorizo", "give": "chorizo_asado",
+                                      "say": "¡Lo saco en su punto! Dorado por fuera y jugoso por dentro.",
+                             "else": {"if_flag": "chorizo_en_parrilla", "say": "Todavía está crudo. El asado no se apura.",
+                                      "else": "¿Agarrar la parrilla? Es sagrada... y quema."}}},
                  "Usar": "No me dejan tocar la parrilla. Es sagrada.",
              }},
             {"id": "parrillero", "name": "Parrillero", "rect": (520, 300, 60, 95),
@@ -109,11 +148,12 @@ ROOMS = {
              "acts": {
                  "Mirar": "El parrillero, con delantal de campeón y cara de pocos amigos.",
                  "Hablar": {"talk": "parrillero"},
-                 "Dar:diario": {"take": "diario", "give": "choripan", "flag": "parrilla_prendida",
-                                "sound": "combine",
-                                "say": [("Parrillero", "¡Papel! Esto lo atamos con alambre y prende. Tomá un chori al pan, botija."),
-                                        ("Tano", "¡Chori al pan conseguido!")]},
-                 "Usar:diario": "Para dárselo uso 'Dar', no 'Usar'. Soy educado.",
+                 "Dar:diario": [("Parrillero", "Papel solo no alcanza: prende y se apaga. Atalo con alambre si querés, pero sin leña no hay fuego."),
+                                ("Parrillero", "Armá la fogata en la parrilla, que yo pongo el fósforo.")],
+                 "Dar:lena": "Me dice que la leña va en la parrilla, no en sus manos.",
+                 "Dar:lena_papel": [("Parrillero", "A mí no: ponela en la parrilla. Yo tiro el fósforo.")],
+                 "Dar:chorizo": [("Parrillero", "No, no: asalo vos. Yo ya hice mi parte.")],
+                 "Dar:chorizo_asado": [("Parrillero", "Se ve bárbaro. Metelo en el pan y tenés tu chori.")],
                  "Dar:choripan": "¿Me devolvés mi propio chori? Qué gracioso.",
                  "Agarrar": "Tocarle el delantal al parrillero es mala idea.",
              }},
@@ -125,12 +165,28 @@ ROOMS = {
                  "Usar": "Intento secar algo. El Niño se ríe de mí.",
                  "Hablar": "Le hablo a la ropa. Gotea con indiferencia.",
              }},
-            {"id": "gato", "name": "Gato", "rect": (545, 385, 65, 40),
-             "stand": (600, 442), "art": ("cat", (200, 130, 60)),
+            {"id": "lena", "name": "Leña", "rect": (538, 400, 84, 30),
+             "stand": (600, 442), "art": ("marker", (140, 90, 50)), "hide_if": "lena_cogida",
+             "needs": "gato_mojado",
+             "blocked": "El gato duerme arriba de la leña. Curado de espanto: no se mueve ni a palos.",
              "acts": {
-                 "Mirar": "Un gato del Mercado, curado de espanto. Se cree el dueño de la parrilla.",
-                 "Hablar": "Miau. (Traducción: 'pagame la entrada'.)",
-                 "Agarrar": "Me mira con desprecio felino. Mejor no.",
+                 "Mirar": {"if_flag": "gato_mojado", "say": "Una pila de leña seca: lo único seco en todo Montevideo.",
+                           "else": "Una pila de leña seca... con un gato durmiendo arriba."},
+                 "Agarrar": {"give": "lena", "flag": "lena_cogida",
+                             "say": "Agarro un par de troncos. Bien secos: un milagro con El Niño."},
+             }},
+            {"id": "gato", "name": "Gato", "rect": (548, 392, 62, 40),
+             "stand": (600, 442), "art": ("cat", (200, 130, 60)), "hide_if": "gato_mojado",
+             "leave": {"to_x": 960, "speed": 9, "hop": 6},  # sale disparado a los saltos
+             "acts": {
+                 "Mirar": "Un gato del Mercado, curado de espanto, durmiendo sobre la leña. Dicen que lo único que lo asusta es el agua.",
+                 "Hablar": "Miau. (Traducción: 'de acá no me muevo'.)",
+                 "Agarrar": "Me mira con desprecio felino. Y no se mueve de arriba de la leña.",
+                 "Usar:termo": {"flag": "gato_mojado", "sound": "nope",
+                                "say": ["Le tiro un chorrito de agua del termo... tibia, tranquilo.",
+                                        "¡El gato sale disparado! Odia el agua más que yo a El Niño.",
+                                        "Y queda agua para el mate. Todo bien."]},
+                 "Dar:chorizo": "¿Darle el chorizo al gato? Ni loco: ese es el almuerzo del perro.",
              }},
             {"id": "a_rambla", "name": "Rambla de Barrio Sur", "rect": (0, 380, 120, 70),
              "stand": (205, 438), "exit": ("rambla", 330), "art": ("zone", None),
@@ -154,6 +210,7 @@ ROOMS = {
              }},
             {"id": "perro", "name": "Perro", "rect": (230, 390, 100, 55),
              "stand": (170, 440), "art": ("dog", (120, 90, 60)), "hide_if": "perro_comido",
+             "leave": {"to_x": 960, "speed": 2.5, "hop": 2},  # se va despacio, panza llena, a dormir la siesta
              "acts": {
                  "Mirar": "Un perro enorme con cara de pocos amigos. Gruñe como un bajo de murga.",
                  "Hablar": "¡Guau! (Traducción: 'chori, ya'.)",

@@ -8,6 +8,8 @@ Máquina de estados (FSM) de la interacción:
     DIALOGUE (opciones múltiples con mouse)           ──▶ IDLE
 Dentro de IDLE/WALKING se arma el comando: verbo → [ítem] → objetivo ("Usar termo con mate").
 """
+import math
+
 import pygame
 
 from engine.ui import Scene
@@ -18,9 +20,10 @@ from engine.dialogue import DialogueBox
 from engine.dialogue_manager import DialogueManager
 from engine.walkmask import WalkMask
 from aventura import art
+from aventura.ui import SoundButton
 from aventura.data import dialogs
 from aventura.data.items import ITEMS, RECIPES
-from aventura.data.rooms import ROOMS, TANO
+from aventura.data.rooms import ROOMS, TANO, TIMERS
 
 BAR_Y = 450  # la barra de verbos/inventario ocupa y >= 450
 VERBS = ["Mirar", "Agarrar", "Usar", "Hablar", "Dar"]
@@ -43,9 +46,18 @@ DEFAULTS = {
 
 
 class GameScene(Scene):
-    def __init__(self, game):
+    def __init__(self, game, retry=False):
         super().__init__(game)
         self.state = game.state
+        self.retry = retry  # True: se vuelve directo a la payada (desde Game Over)
+        self.paused = False
+        w = game.screen.get_width()
+        self.pause_buttons = [
+            SoundButton(game, w // 2 - 140, 200, 280, 52, "Continuar", self.toggle_pause, font_size=34),
+            SoundButton(game, w // 2 - 140, 265, 280, 52, "", game.toggle_music, font_size=34),
+            SoundButton(game, w // 2 - 140, 330, 280, 52, "Volver al menú",
+                        lambda: game.change_scene("menu"), font_size=34),
+        ]
         self.fsm = IDLE
         self.verb, self.pending = "Mirar", None
         self.font = pygame.font.Font(None, 28)
@@ -69,6 +81,8 @@ class GameScene(Scene):
         self.load_room(self.state.room)
 
     def on_enter(self):
+        if self.retry:
+            return self.start_dialog("payada_intro")
         self.say([("Tano", "Mañana arranca el Carnaval y me robaron el bombo de la murga..."),
                   ("Tano", "¡Tengo que recuperarlo antes de la prueba de admisión!"),
                   ("Tano", "Y encima llueve desde que empezó la primavera... gracias, Niño.")])
@@ -78,6 +92,9 @@ class GameScene(Scene):
         pygame.mouse.set_visible(True)
 
     # ------------------------------------------------- API para los diálogos
+    def toggle_pause(self):
+        self.paused = not self.paused
+
     @property
     def inventory(self):
         return self.state.inventory
@@ -91,12 +108,6 @@ class GameScene(Scene):
     def play(self, sound):
         self.game.audio.play_sound(sound)
 
-    def trade(self, take, give, flag=None):
-        self.inventory.remove(take)
-        self.give(give)
-        if flag:
-            self.flag(flag)
-
     def finish_after(self, end):
         self.pending_end = end
 
@@ -104,12 +115,17 @@ class GameScene(Scene):
     def load_room(self, room, spawn_x=None):
         self.state.room = room
         self.room = ROOMS[room]
+        self.game.play_music(room)  # cada lugar tiene su tema (musica_<room>.wav)
         self.walk = WalkMask((art.W, art.H), self.room["walk"])
         self.hotspots = []
         for d in self.room["hotspots"]:
             h = Hotspot(d["rect"], d["name"])
             h.data = d
             self.hotspots.append(h)
+        self.leaving = {}  # id -> desplazamiento x de los que se están yendo (ver "leave" en rooms.py)
+        for h in self.hotspots:  # si ya se fueron antes (o se volvió al lugar), no repetir la salida
+            if h.data.get("leave") and self.has_flag(h.data["hide_if"]):
+                self.state.gone.add(h.data["id"])
         sx, sy = self.room["start"]
         self.pos = (spawn_x if spawn_x is not None else sx, sy)
         self.target = self.on_arrive = None
@@ -196,10 +212,16 @@ class GameScene(Scene):
             return self.apply(res.get("else", "No pasa nada."))
         for k in ([res["take"]] if isinstance(res.get("take"), str) else res.get("take", [])):
             self.inventory.remove(k)
-        if res.get("give"):
-            self.give(res["give"])
+        for k in ([res["give"]] if isinstance(res.get("give"), str) else res.get("give", [])):
+            self.give(k)
         if res.get("flag"):
             self.flag(res["flag"])
+        for f in res.get("unflag", []):
+            self.state.flags.discard(f)
+        if res.get("timer"):
+            self.state.timers[res["timer"]] = self.state.clock
+        if res.get("timer_stop"):
+            self.state.timers.pop(res["timer_stop"], None)
         sound = res.get("sound") or ("pickup" if res.get("give") else None)
         if sound:
             self.play(sound)
@@ -261,7 +283,10 @@ class GameScene(Scene):
                 result = self.inventory.combine(first, key, self.recipes)
                 if result:
                     self.play("combine")
-                    return self.say(RECIPES[frozenset((first, key))][1])
+                    recipe = RECIPES[frozenset((first, key))]
+                    for kept in recipe[2] if len(recipe) > 2 else ():
+                        self.give(kept)  # ej. el termo sigue en el inventario después de cebar
+                    return self.say(recipe[1])
             self.play("nope")
             return self.say("No creo que eso funcione... ni atado con alambre.")
         if self.verb in ("Usar", "Dar"):
@@ -276,6 +301,14 @@ class GameScene(Scene):
     # -------------------------------------------------------------- eventos
     def handle_events(self, events):
         for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.play("click")
+                self.toggle_pause()
+                continue
+            if self.paused:
+                for b in self.pause_buttons:
+                    b.handle_event(event)
+                continue
             if self.fsm == DIALOGUE:
                 self.box.handle_event(event)
                 continue
@@ -311,7 +344,12 @@ class GameScene(Scene):
         return 0.7 + 0.4 * min(1, max(0, (self.pos[1] - 300) / 150))
 
     def update(self):
+        if self.paused:
+            return
         self.t += 1
+        self.state.clock += 1
+        self._update_timers()
+        self._update_leaving()
         self.dialogue.update()
         if self.fsm == SPEAKING and self.dialogue.active_message is None:
             self._next_line()
@@ -331,6 +369,44 @@ class GameScene(Scene):
         self.hovered = bool(h)
         self.hovered_name = (h.name if h else "") or (ITEMS[item.name][0] if item else "")
 
+    def _update_timers(self):
+        """Mini-retos de tiempo (TIMERS en rooms.py): al cumplirse cada etapa se activa su flag y,
+        si Tano está en ese escenario y libre, avisa en voz alta."""
+        for name, start in list(self.state.timers.items()):
+            room, stages = TIMERS[name]
+            for frames, flag, aviso in stages:
+                if self.state.clock - start >= frames and not self.has_flag(flag):
+                    self.flag(flag)
+                    if self.state.room == room and self.fsm == IDLE:
+                        self.say(aviso)
+            if self.has_flag(stages[-1][1]):
+                del self.state.timers[name]  # última etapa: el temporizador terminó
+
+    def _update_leaving(self):
+        """Hotspots con "leave": cuando se activa su hide_if dejan de ser clickeables, pero se siguen
+        dibujando mientras caminan hasta to_x; al llegar quedan en state.gone."""
+        for h in self.hotspots:
+            leave, hid = h.data.get("leave"), h.data["id"]
+            if not leave or hid in self.state.gone or not self.has_flag(h.data["hide_if"]):
+                continue
+            dist = leave["to_x"] - h.rect.x
+            off = self.leaving.get(hid, 0.0) + leave["speed"] * (1 if dist > 0 else -1)
+            if abs(off) >= abs(dist):
+                self.state.gone.add(hid)
+                self.leaving.pop(hid, None)
+            else:
+                self.leaving[hid] = off
+
+    def _draw_hotspot(self, surface, h):
+        hid, (kind, color) = h.data["id"], h.data["art"]
+        rect, flip = h.rect, False
+        if hid in self.leaving:
+            leave, off = h.data["leave"], self.leaving[hid]
+            hop = abs(math.sin(off / max(leave["speed"], 1) * 0.5)) * leave.get("hop", 0)
+            rect = h.rect.move(int(off), -int(hop))
+            flip = leave["to_x"] > h.rect.x  # los sprites miran a la izquierda
+        art.draw_prop(surface, kind, rect, color, self._sprite_id(h), flip)
+
     # ---------------------------------------------------------------- dibujo
     def _command_line(self):
         v = self.verb
@@ -341,14 +417,15 @@ class GameScene(Scene):
 
     def draw(self, surface):
         surface.blit(self.game.assets.get_image(f"bg_{self.state.room}"), (0, 0))
-        props = [h for h in self.hotspots if self._visible(h) and h.data["art"][0] not in ("zone", "item")]
+        props = [h for h in self.hotspots
+                 if (self._visible(h) or h.data["id"] in self.leaving) and h.data["art"][0] not in ("zone", "item")]
         props.sort(key=lambda h: h.rect.bottom)
         drawn = False
         for h in props:
             if not drawn and h.rect.bottom > self.pos[1]:
                 self._draw_tano(surface)
                 drawn = True
-            art.draw_prop(surface, h.data["art"][0], h.rect, h.data["art"][1], h.data["id"])
+            self._draw_hotspot(surface, h)
         if not drawn:
             self._draw_tano(surface)
         for h in self.hotspots:
@@ -360,8 +437,37 @@ class GameScene(Scene):
             surface.blit(title, title.get_rect(topleft=(12, 8)))
         self._draw_bar(surface)
         if self.fsm == DIALOGUE:
+            self._shade(surface, (0, BAR_Y, surface.get_width(), surface.get_height() - BAR_Y), 170)
             self.box.draw()
-        self.cursor.draw(surface, self.hovered)
+        if self.paused:
+            self._draw_pause(surface)
+        self.cursor.draw(surface, self.hovered and not self.paused)
+
+    def _sprite_id(self, h):
+        variants = h.data.get("sprite_if", [])
+        if isinstance(variants, tuple):
+            variants = [variants]
+        sprite = h.data["id"]
+        for flag, alt in variants:  # gana la última variante cuyo flag esté activo
+            if self.has_flag(flag):
+                sprite = alt
+        return sprite
+
+    @staticmethod
+    def _shade(surface, rect, alpha):
+        veil = pygame.Surface(pygame.Rect(rect).size, pygame.SRCALPHA)
+        veil.fill((0, 0, 0, alpha))
+        surface.blit(veil, pygame.Rect(rect).topleft)
+
+    def _draw_pause(self, surface):
+        self._shade(surface, surface.get_rect(), 170)
+        title = pygame.font.Font(None, 64).render("PAUSA", True, (255, 200, 60))
+        surface.blit(title, title.get_rect(centerx=surface.get_width() // 2, y=120))
+        self.pause_buttons[1].text = f"Música: {'Sí' if self.game.music_on else 'No'}"
+        for b in self.pause_buttons:
+            b.draw(surface)
+        hint = self.small.render("ESC para seguir jugando", True, (200, 200, 220))
+        surface.blit(hint, hint.get_rect(centerx=surface.get_width() // 2, y=400))
 
     def _draw_tano(self, surface):
         speaking = self.fsm == SPEAKING and getattr(self, "speaker", "") == "Tano"

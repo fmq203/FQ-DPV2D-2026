@@ -54,6 +54,13 @@ Point-and-click al estilo **Monkey Island**: elegís un verbo, después el objet
 | Cancelar el ítem elegido | Clic derecho |
 | Saltar un texto | Clic |
 | Diálogos | Elegís la opción con el mouse |
+| Pausa / música / volver al menú | `ESC` |
+
+---
+
+## 🎬 Video
+
+▶️ [**Ver el video del juego**](video/el-murguista.mp4) (40 s): una partida completa, de la Rambla a la victoria.
 
 ---
 
@@ -78,16 +85,18 @@ Point-and-click al estilo **Monkey Island**: elegís un verbo, después el objet
 - 🎯 **5 verbos** y un comando que se arma solo («Dar Chori al pan a Perro»)
 - 🎒 **Inventario con combinación** de ítems (yerba + mate + termo = mate listo)
 - 💬 **Diálogos con opciones múltiples**, elegidas con el mouse
-- 🧠 **3 puzles**: el mate, el chori al pan y la payada final
+- 🧠 **3 puzles**: el mate, la payada final y el **mini-reto de la parrilla**: espantar al gato, armar el fuego y asar el chorizo **justo a tiempo** (¡si te distraés, se quema!)
 - 🎤 **Duelo de payada**: elegís la rima correcta; tres errores y es **Game Over**
-- 🔊 **Sonido en cada interacción** (clics, diálogos, ítems)
-- 🏁 Pantallas de **Inicio**, **Game Over** y **Victoria**, con volver al menú
+- 🔊 **Sonido en cada interacción** (clics, diálogos, ítems) y **música distinta en cada lugar** (murga, candombe y una rambla lluviosa)
+- 🔁 Si perdés la payada, **Reintentar payada** sin repetir todo
+- ⏸️ **Pausa** con `ESC` (seguir, apagar la música o volver al menú)
+- 🏁 Pantallas de **Inicio**, **Créditos**, **Game Over** y **Victoria**
 
 <details>
 <summary>⚠️ <b>Spoiler:</b> cómo se resuelve</summary>
 
 1. **Rambla:** agarrá el **termo** (banco), el **mate** (muro) y el **diario** (tacho). Hablá con el pescador para la pista.
-2. **Mercado:** agarrá la **yerba**. Combiná **yerba + mate** y el resultado con el **termo** para tener un *mate listo*. **Dale el diario** al parrillero: prende la parrilla y te da un **chori al pan**.
+2. **Mercado:** agarrá la **yerba**. Combiná **yerba + mate** y el resultado con el **termo** para tener un *mate listo*. El gato duerme sobre la leña: **usá el termo con el gato** (odia el agua). **Agarrá la leña**, combiná **diario + leña** y **usá la fogata con la parrilla**: el parrillero te da un chorizo y un pan. **Poné el chorizo en la parrilla** y sacalo cuando Tano diga «¡huele a gloria!» (si esperás de más, se quema). Combiná **chorizo asado + pan** = **chori al pan**.
 3. **Tablado:** **dale el chori al perro** (libera el paso) y **el mate listo al Contramaestre**.
 4. **Payada:** cuatro versos, elegí la rima que cierra bien. Con tres errores perdés. Si ganás, **agarrá el bombo**.
 
@@ -107,6 +116,8 @@ pip install -r requirements.txt
 python -m aventura.main
 ```
 
+> 🔇 **¿Sin sonido en WSL?** Si aparece `Error al inicializar AudioManager: dsp: No such audio device`, falta la librería de PulseAudio: `sudo apt install -y libpulse0` (WSLg ya trae el servidor de audio). El juego funciona igual, pero mudo.
+
 Prueba automática (juega la partida completa sin ventana):
 
 ```bash
@@ -118,9 +129,9 @@ python tests/smoke_test.py
 ## 📊 Estado del proyecto
 
 <!-- ESTADO:INICIO — este bloque lo mantiene el agente (ver brain/AGENTS.md §8) -->
-**Última actualización: 2026-10-25** · Entrega final: **6 de noviembre de 2026**
+**Última actualización: 2026-10-30** · Entrega final: **6 de noviembre de 2026**
 
-![Avance](https://img.shields.io/badge/avance-~85%25-ffc83c?style=for-the-badge&labelColor=14142a)
+![Avance](https://img.shields.io/badge/avance-~95%25-ffc83c?style=for-the-badge&labelColor=14142a)
 
 | Requisito | Estado |
 |---|---|
@@ -130,12 +141,14 @@ python tests/smoke_test.py
 | Diálogos con opciones múltiples | ✅ |
 | ≥ 2 puzles | ✅ (3) |
 | Máquina de estados y hotspots | ✅ |
-| Inicio / Game Over / Victoria | ✅ |
+| Inicio / Game Over / Victoria (+ Créditos y pausa) | ✅ |
 | Sonido en toda interacción | ✅ |
 | Fondos | ✅ pixel art (los 4) |
-| Sprites de personajes y objetos | ⏳ figuras geométricas provisorias |
-| Música | ⏳ pendiente |
-| Video de 15 a 40 s | ⏳ pendiente |
+| Sprites de personajes y objetos | ✅ pixel art por código (retoques a mano pendientes) |
+| Música | ✅ un tema por lugar |
+| Video de 15 a 40 s | ✅ [40 s](video/el-murguista.mp4) |
+| Mini-retos por pantalla (sugerencia del docente) | ✅ parrilla en el Mercado |
+| Documento de diseño | ✅ [DISENO.md](DISENO.md) |
 <!-- ESTADO:FIN -->
 
 ---
@@ -144,12 +157,15 @@ python tests/smoke_test.py
 
 - **Motor del curso** (`brain/juego/engine/`) con extensiones documentadas: máscara de caminabilidad, combinación de ítems, diálogos con mouse y texto flotante con color por personaje.
 - **Un solo `GameScene`** parametrizado por datos: escenarios y hotspots (`aventura/data/rooms.py`), diálogos (`dialogs.py`) e ítems y recetas (`items.py`).
-- **Arte con respaldo:** si existe el PNG se usa; si no, se dibuja un placeholder geométrico (`aventura/art.py`).
-- Documentación de diseño y decisiones en la wiki: [`brain/wiki/`](brain/wiki/index.md) · [`brain/decisions.md`](brain/decisions.md).
+- **Arte con respaldo:** si existe el PNG se usa; si no, se dibuja un placeholder geométrico (`aventura/art.py`). Los sprites salen de `tools/gen_sprites.py` y se pueden retocar con [LibreSprite](https://github.com/libresprite/libresprite).
+- 📐 **Documento de diseño:** [`DISENO.md`](DISENO.md) (mecánicas, puzles y decisiones de jugabilidad).
+- Documentación detallada y decisiones en la wiki: [`brain/wiki/`](brain/wiki/index.md) · [`brain/decisions.md`](brain/decisions.md).
 
 ```
 TAREA/
 ├── README.md              ← este archivo
+├── DISENO.md              ← documento de diseño
+├── video/                 ← video de 40 s (tools/grabar_video.py)
 ├── capturas/              ← capturas del juego (se regeneran con tools/capturas.py)
 └── brain/
     ├── juego/             ← el juego (engine/ + aventura/ + tests/)
@@ -159,10 +175,12 @@ TAREA/
 
 ## 🎨 Créditos y assets
 
-- **Fondos:** pixel art creado con IA mediante **Pixellab** (Rambla, Mercado, Tablado y menú).
-- **Sonidos:** generados por código (ondas simples), sin licencias externas.
-- **Personajes y objetos:** provisorios, dibujados por código.
+- **Fondos:** pixel art creado con IA mediante **[Pixellab.ai](https://www.pixellab.ai)** (Rambla, Mercado, Museo y menú).
+- **Personajes y objetos:** pixel art generado por código (`brain/tools/gen_sprites.py`).
+- **Música y sonidos:** sintetizados por código, sin licencias externas.
+- **Asistencia de programación y diseño:** Claude Sonnet 5.5 y Claude Opus 5.5 (Anthropic).
 - **Motor:** el del curso Videojuegos 2D 2026.
+- Los créditos también están en el juego (menú → **Créditos**).
 - Lista completa con origen y licencia: [`brain/wiki/entrega/assets-lista.md`](brain/wiki/entrega/assets-lista.md).
 
 <div align="center">

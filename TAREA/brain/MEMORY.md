@@ -8,5 +8,6 @@
 - Fechas: parcial 23-oct-2026 (pasada); final **6-nov-2026**. Ver [[entrega-y-defensa]].
 - Entregables: repo GitLab público, README paso a paso, doc de diseño, lista de assets con origen, video 15–40 s, defensa. Ver [[checklist-entrega]].
 - Usuario trabaja en WSL (Linux) con VS Code; `pygame` solo está en `juego/.venv` (no en el sistema): correr con `juego/.venv/bin/python`.
+- Audio en WSL: WSLg trae el servidor PulseAudio (`/mnt/wslg/PulseServer`), pero sin el paquete `libpulse0` SDL cae en `dsp` y el juego queda mudo (`dsp: No such audio device`). Solución: `sudo apt install -y libpulse0` (requiere la contraseña del usuario).
 - Brain: formato basado en `raw/guia-second-brain.pdf` pero con AGENTS.md (no CLAUDE.md). Ver [[decisions]].
 - Gaps conocidos: `engine/shared_assets.py` apunta a `assets/sonidos` y `assets/musica` de una carpeta "2027" que NO viene en el zip; `06/assets/sonidos/` solo trae README (falta `click.wav`).

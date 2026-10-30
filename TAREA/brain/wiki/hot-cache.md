@@ -2,22 +2,23 @@
 title: Hot cache
 type: estado
 sources: [AGENTS.md, MEMORY.md, juego/tests/smoke_test.py]
-updated: 2026-10-25
+updated: 2026-10-30
 ---
 
-# Estado actual (2026-10-25)
+# Estado actual (2026-10-30)
 
-**Hecho — "El Murguista" jugable de punta a punta** (avance ~85%)
-- 3 escenarios conectados (Rambla de Barrio Sur, Mercado del Puerto, Museo del Carnaval) con zona navegable y click-to-walk ([[walkmask]]).
-- FSM de verbos (Mirar/Agarrar/Usar/Hablar/Dar) + comando armado ([[fsm-verbos]]), inventario con combinación ([[inventario-y-combinacion]]), diálogos con opciones por mouse y duelo de payada ([[sistema-dialogos]]), 3 puzles ([[escenarios-y-puzles]]).
-- Menú, Game Over (3 errores en la payada) y Victoria (coger el bombo), con volver al menú; sonido en toda interacción.
-- Fondos: los 4 son pixel art (Pixellab). Personajes y objetos siguen como placeholders geométricos por código (`aventura/art.py`) por falta de generaciones gratuitas. Los atajos F1/F2 ya fueron eliminados.
-- **README público** en `TAREA/README.md` con capturas (`tools/capturas.py`); se actualiza según [[checklist-entrega]] y la regla §8 de `AGENTS.md`.
-- `tests/smoke_test.py` juega la partida completa (victoria y derrota) con eventos reales: en verde. `juego/.venv` creado.
+**Hecho — "El Murguista" completo y jugable** (avance ~95%)
+- 3 escenarios conectados (Rambla de Barrio Sur, Mercado del Puerto, Museo del Carnaval) con zona navegable ([[walkmask]]); verbos + FSM ([[fsm-verbos]]); inventario con combinación ([[inventario-y-combinacion]]); diálogos con opciones y payada ([[sistema-dialogos]]); 3 puzles ([[escenarios-y-puzles]]), incluido el **mini-reto de la parrilla** en el Mercado (gato → leña → fogata → asar el chorizo a tiempo).
+- Menú (Comenzar / **Créditos** / Salir), **pausa con ESC** (Continuar / Música / Menú), Game Over con **Reintentar payada**, Victoria.
+- Arte: fondos Pixellab; **personajes, objetos e íconos en pixel art generado por código** (`tools/gen_sprites.py`, PNG editables con LibreSprite). **Música por lugar** generada por código (`tools/gen_musica.py`: menú, Rambla, Mercado, Museo).
+- Entregables: `TAREA/README.md`, **`TAREA/DISENO.md`** (documento de diseño), **`TAREA/video/el-murguista.mp4`** (39,8 s, `tools/grabar_video.py`), [[assets-lista]], [[cambios-al-motor]].
+- `tests/smoke_test.py` en verde: victoria, Game Over → reintentar → victoria, créditos, pausa, límites de la zona caminable.
 
 **Siguiente** (entrega final 6-nov-2026)
-1. Jugar a mano (`cd juego && .venv/bin/python -m aventura.main`) y ajustar ritmo/humor/textos.
-2. Arte real opcional (reemplazar `art.py`; registrar en [[assets-lista]]) y música opcional.
-3. README, documento de diseño, video 15–40 s, repo GitLab ([[checklist-entrega]]).
+1. El usuario va a revisar y personalizar a mano (sprites en LibreSprite, textos, créditos en `aventura/data/creditos.py`). Si retoca sprites, **no** volver a correr `gen_sprites.py`.
+2. Tras cambios visibles: `tools/capturas.py` y `tools/grabar_video.py`.
+3. Jugar una partida a mano; preparar la defensa ([[checklist-entrega]]).
 
-**Bloqueos / gaps:** integrantes del grupo; si se envió el mail al docente; estructura del repo GitLab; música.
+**Idea abierta:** el docente recomienda mini-retos en **cada** pantalla; la Rambla todavía solo tiene recolección + diálogo.
+
+**Bloqueos / gaps:** GitHub vs GitLab para la entrega; integrantes del grupo y mail al docente; términos de uso de Pixellab.

@@ -25,6 +25,8 @@ Idioma de trabajo y de código/comentarios: español (como el curso).
 | `wiki/diseno/` | Arquitectura y diseño del juego | agente |
 | `wiki/entrega/` | Checklist, README, assets, guion de video | agente |
 | `../README.md` (= `TAREA/README.md`) | README **público** que se ve en GitHub (diseño inspirado en el juego) — ver §8 | agente |
+| `../DISENO.md` | Documento de diseño de la entrega (decisiones de jugabilidad y mecánicas) | agente |
+| `../video/` | Video de entrega (lo genera `tools/grabar_video.py`) | agente (script) |
 | `../capturas/` | Capturas del juego usadas por el README (se regeneran con `tools/capturas.py`) | agente (script) |
 | `juego/` | Proyecto ejecutable (`engine/` + `aventura/` + `tests/`) | agente |
 | `tools/lint.py` | Lint del brain (links, index, frontmatter) | agente |
@@ -58,6 +60,7 @@ Idioma de trabajo y de código/comentarios: español (como el curso).
 - Prueba de humo (sin ventana): `cd juego && python tests/smoke_test.py`. Correrla antes de dar algo por terminado y ampliarla con cada feature.
 - Lint del brain: `python3 tools/lint.py`. Correrlo después de crear o mover páginas.
 - Regenerar capturas del README: `juego/.venv/bin/python tools/capturas.py` (desde `brain/`).
+- Sprites/íconos, música y video (desde `brain/`): `juego/.venv/bin/python tools/gen_sprites.py` (**sobrescribe** los PNG generados; no correr si el usuario los retocó a mano), `python3 tools/gen_musica.py`, `juego/.venv/bin/python tools/grabar_video.py` (necesita `imageio-ffmpeg`, ver `juego/requirements-dev.txt`). Tras cambios visibles en el juego, regenerar capturas **y** video.
 
 ## 7. Fechas clave
 Parcial 23-oct-2026 (ya pasó, esperado 50%). **Entrega final 6-nov-2026** (GitLab público + README + doc de diseño + lista de assets + video 15–40 s + defensa).

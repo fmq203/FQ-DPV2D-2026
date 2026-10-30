@@ -50,3 +50,7 @@
 - 2026-10-25 | update | assets-lista (menú pixel art)
 - 2026-10-25 | create | README público (TAREA/README.md) y capturas; regla en AGENTS.md
 - 2026-10-25 | update | escenarios-y-puzles, hot-cache, assets-lista (nombres: Rambla de Barrio Sur, Museo del Carnaval)
+- 2026-10-30 | update | assets-lista (sprites, íconos y música por código), arquitectura-juego, escenarios-y-puzles, checklist-entrega, video-guion, hot-cache; create DISENO.md, video, créditos
+- 2026-10-30 | update | assets-lista, arquitectura-juego, video-guion, hot-cache (música por lugar)
+- 2026-10-30 | update | escenarios-y-puzles, inventario-y-combinacion, video-guion, hot-cache (mini-reto de la parrilla)
+- 2026-10-30 | update | escenarios-y-puzles (salidas animadas del gato y el perro)

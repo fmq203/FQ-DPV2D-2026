@@ -14,7 +14,8 @@ class MenuScene(Scene):
         w = game.screen.get_width()
         self.buttons = [
             SoundButton(game, w // 2 - 130, 300, 260, 56, "Comenzar Juego", game.new_game),
-            SoundButton(game, w // 2 - 130, 380, 260, 56, "Salir", self.quit),
+            SoundButton(game, w // 2 - 130, 370, 260, 56, "Créditos", lambda: game.change_scene("credits")),
+            SoundButton(game, w // 2 - 130, 440, 260, 56, "Salir", self.quit),
         ]
 
     @staticmethod
@@ -28,6 +29,9 @@ class MenuScene(Scene):
                 out.blit(shadow, (dx, dy))
         out.blit(base, (4, 4))
         return out
+
+    def on_enter(self):
+        self.game.play_music("menu")
 
     def quit(self):
         self.game.running = False

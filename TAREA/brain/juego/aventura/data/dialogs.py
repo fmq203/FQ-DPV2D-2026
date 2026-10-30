@@ -65,25 +65,22 @@ def _pescador(ctx):
 
 
 def _parrillero(ctx):
-    inv = ctx.inventory
-    start_choices = [("¿Un chori al pan? ¿Cuánto sale?", "precio"),
-                     ("¿Y de dónde saco un diario?", "pista")]
-    if inv.has("diario") and not ctx.has_flag("parrilla_prendida"):
-        start_choices.insert(0, ("Tengo este diario, ¿sirve?", "entrega"))
-    start_choices.append(("Chau.", None))
+    if ctx.inventory.has("choripan") or ctx.has_flag("perro_comido"):
+        return {"start": N("Ya tenés tu chori, flaco. A caballo regalado no se le miran los dientes, pero comelo que se enfría.",
+                           "Parrillero", [("Gracias, maestro.", None)])}
     if ctx.has_flag("parrilla_prendida"):
-        return {"start": N("Ya te di tu chori, flaco. A caballo regalado no se le miran los dientes, pero comelo que se enfría.", "Parrillero",
-                           [("Gracias, maestro.", None)])}
+        return {"start": N("Fuego hay. Ahora asá ese chorizo: ni crudo ni carbón, ¿eh? Y después al pan.",
+                           "Parrillero", [("Dale.", None)])}
     return {
-        "start": N("Buenas. Si querés chori, el fuego está apagado y sin papel no prende.",
-                   "Parrillero", start_choices),
-        "precio": N("Para vos es gratis si me ayudás a prender la parrilla. Con papel, ¿eh? Papel.",
-                    "Parrillero", [("Entendido.", "start")]),
-        "pista": N("Buscá por la rambla. En los tachos siempre hay diarios de ayer.",
+        "start": N("Buenas. Si querés chori, el fuego está apagado y yo tengo la muñeca abombada. Prendelo vos.",
+                   "Parrillero", [("¿Cómo prendo el fuego?", "fuego"), ("¿De dónde saco leña?", "lena"),
+                                  ("¿Y papel?", "papel"), ("Chau.", None)]),
+        "fuego": N("Papel abajo, leña arriba, y lo ponés en la parrilla: yo tiro el fósforo. "
+                   "Con papel solo no alcanza, se apaga en un segundo.", "Parrillero", [("Entendido.", "start")]),
+        "lena": N("Hay una pila ahí abajo... pero el gato duerme encima y no se mueve ni con El Niño. "
+                  "Lo único que lo espanta es el agua.", "Parrillero", [("Mmm, agua...", "start")]),
+        "papel": N("Buscá por la rambla. En los tachos siempre hay diarios de ayer.",
                    "Parrillero", [("Gracias.", "start")]),
-        "entrega": N("¡Papel! Con esto prendo el fuego. Tomá, tu chori al pan bien doradito.", "Parrillero",
-                     [("¡Gracias!", None)],
-                     action=lambda n: ctx.trade("diario", "choripan", "parrilla_prendida")),
     }
 
 
@@ -106,7 +103,8 @@ def _payada_intro(ctx):
         choices = []
         for j, (texto, ok) in enumerate(opciones):
             choices.append((texto, f"r{i}_{'ok' if ok else 'mal'}"))
-        nodes[f"r{i}"] = N(verso, "Contramaestre", choices)
+        nodes[f"r{i}"] = N(verso, "Contramaestre", choices,
+                           action=(lambda nd: ctx.game.save_checkpoint()) if i == 0 else None)
         nxt = f"r{i + 1}" if i + 1 < n else "gana"
         nodes[f"r{i}_ok"] = N(OK_FRASES[i % len(OK_FRASES)], "Contramaestre", [("(Seguir)", nxt)],
                               action=lambda nd: ctx.play("combine"))
