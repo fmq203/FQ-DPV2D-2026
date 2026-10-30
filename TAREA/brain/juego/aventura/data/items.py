@@ -8,7 +8,7 @@ ITEMS = {
     "mate_listo":   ("Mate listo",    "¡Un mate cebado, calentito y espumoso! Irresistible."),
     "diario":       ("Diario",        "El diario de ayer. Titular: 'Primavera, día 40 de lluvia: culpan a El Niño'."),
     "lena":         ("Leña",          "Unos troncos secos. Lo único seco en todo Montevideo."),
-    "lena_papel":   ("Fogata armada", "Leña con papel abajo. Solo falta el fósforo... y una parrilla."),
+    "lena_papel":   ("Fuego armado",  "Leña con papel abajo. Solo falta el fósforo... y una parrilla."),
     "chorizo":      ("Chorizo",       "Un chorizo crudo. Todavía no es un chori: es una promesa."),
     "pan":          ("Pan",           "Un pan flauta crujiente, esperando a su chorizo."),
     "chorizo_asado": ("Chorizo asado", "Dorado por fuera, jugoso por dentro. Le falta el pan."),
@@ -21,6 +21,6 @@ RECIPES = {
     frozenset(("yerba", "mate")): ("mate_cargado", "Cargás el mate con yerba. Falta el agua."),
     frozenset(("mate_cargado", "termo")): ("mate_listo", "¡Cebás un mate perfecto, con espuma y todo! (El termo me lo quedo.)",
                                            ("termo",)),
-    frozenset(("diario", "lena")): ("lena_papel", "Papel abajo, leña arriba: fogata armada. Ahora, a la parrilla."),
+    frozenset(("diario", "lena")): ("lena_papel", "Papel abajo, leña arriba: fuego armado. Ahora, a la parrilla."),
     frozenset(("chorizo_asado", "pan")): ("choripan", "¡Chorizo en el pan: chori al pan como Dios manda!"),
 }

@@ -104,7 +104,7 @@ def pescador():
     return s
 
 
-def parrillero():
+def asador():
     """Boina, bigote, panza y delantal; pinza en la mano."""
     s = lienzo(22, 36)
     R(s, NEGRO, 5, 1, 10, 3); R(s, NEGRO, 9, 0)
@@ -321,7 +321,7 @@ def _chorizo(s, coccion):
 SPRITES = {
     "tano_idle": tano(),
     **{f"tano_walk_{i}": tano(i) for i in range(4)},
-    "pescador": pescador(), "parrillero": parrillero(), "contramaestre": contramaestre(),
+    "pescador": pescador(), "asador": asador(), "contramaestre": contramaestre(),
     "perro": perro(), "gato": gato(), "bombo": bombo(), "banco": banco(),
     "tacho": tacho(), "tacho_vacio": tacho(False),
     "yerbas": yerbas(), "parrilla": parrilla(), "parrilla_prendida": parrilla(True), "lena": lena(),

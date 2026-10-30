@@ -35,14 +35,14 @@ Cada escenario tiene una **máscara de caminabilidad**: una unión de rectángul
 Barra inferior horizontal de 8 casillas, como en Monkey Island. Para combinar se elige **Usar**, después un ítem y después otro ítem. Las recetas son una tabla de datos `{frozenset({a, b}): resultado}`, así que el orden no importa.
 
 ### 2.4 Diálogos con opciones múltiples
-Árboles de nodos (`DialogueNode`) con 2 a 4 opciones que se eligen con el mouse. Las opciones pueden depender del inventario y de las banderas: por ejemplo, el parrillero cambia lo que dice según si la parrilla ya está prendida o si ya tenés el chori. Las líneas sueltas flotan sobre quien habla, con un color por personaje.
+Árboles de nodos (`DialogueNode`) con 2 a 4 opciones que se eligen con el mouse. Las opciones pueden depender del inventario y de las banderas: por ejemplo, el asador cambia lo que dice según si la parrilla ya está prendida o si ya tenés el chori. Las líneas sueltas flotan sobre quien habla, con un color por personaje.
 
 ## 3. Escenarios
 
 | Escenario | Qué hay | Función |
 |---|---|---|
 | **Rambla de Barrio Sur** | Banco con termo, mate sobre el muro, tacho con diario, pescador | Recolección inicial; el pescador da la pista con opciones de diálogo |
-| **Mercado del Puerto** | Puesto de yerba, parrilla, parrillero, gato durmiendo sobre la leña, tendedero | Combinación del mate; **mini-reto de la parrilla**: prender el fuego y asar el chorizo a tiempo |
+| **Mercado del Puerto** | Puesto de yerba, parrilla, asador, gato durmiendo sobre la leña, tendedero | Combinación del mate; **mini-reto de la parrilla**: prender el fuego y asar el chorizo a tiempo |
 | **Museo del Carnaval** (tablado) | Perro hambriento, Contramaestre, cartel y, al final, el bombo | Obstáculo (perro), duelo de payada y victoria |
 
 Los escenarios están conectados en línea (Rambla ⇄ Mercado ⇄ Museo) mediante hotspots de salida.
@@ -63,8 +63,8 @@ flowchart TD
         listo(["MATE LISTO"])
         gato["Usar termo con gato<br/>→ el gato se va"]
         lena["Agarrar leña"]
-        fogata["Fogata armada"]
-        parrilla["Usar fogata con parrilla<br/>→ chorizo + pan"]
+        fuego["Fuego armado"]
+        parrilla["Usar fuego con parrilla<br/>→ chorizo + pan"]
         asar{"Usar chorizo con parrilla<br/>⏱ ¿cuándo lo saco?"}
         asado["Chorizo asado"]
         chori(["CHORI AL PAN"])
@@ -84,11 +84,11 @@ flowchart TD
     cargado --> listo
     termo -- "agua<br/>(el termo se conserva)" --> listo
     termo --> gato --> lena
-    diario --> fogata
-    lena --> fogata --> parrilla --> asar
+    diario --> fuego
+    lena --> fuego --> parrilla --> asar
     asar -- "antes de 8 s: crudo" --> asar
     asar -- "8 a 18 s: a punto" --> asado
-    asar -- "después de 18 s: quemado<br/>(el parrillero da otro)" --> asar
+    asar -- "después de 18 s: quemado<br/>(el asador da otro)" --> asar
     asado -- "+ pan" --> chori
     chori --> perro --> contra
     listo --> contra --> payada
@@ -100,15 +100,15 @@ flowchart TD
 1. **El mate (combinación en dos pasos):** objetos repartidos en dos escenarios, para obligar a explorar.
 2. **El chori al pan (mini-reto de la parrilla):** el jugador hace el chori él mismo, en cuatro pasos:
    - **Espantar al gato**, que duerme sobre la leña: solo le teme al agua y el termo tiene agua. Se lo ve salir corriendo a los saltos.
-   - **Armar la fogata**: diario + leña. El papel solo no alcanza, igual que el mate necesita yerba *y* agua.
-   - **Prender la parrilla**: el parrillero pone el fósforo y da el chorizo y el pan.
+   - **Armar el fuego**: diario + leña. El papel solo no alcanza, igual que el mate necesita yerba *y* agua.
+   - **Prender la parrilla**: el asador pone el fósforo y da el chorizo y el pan.
    - **Asar el chorizo con tiempo**: crudo al principio, a punto a los 8 s (Tano avisa «¡huele a gloria!») y quemado a los 18 s, aunque te vayas del Mercado.
 
-   Si se quema, el parrillero da otro, así que equivocarse no traba la partida. La parrilla muestra cómo se va haciendo el chorizo.
+   Si se quema, el asador da otro, así que equivocarse no traba la partida. La parrilla muestra cómo se va haciendo el chorizo.
 3. **La payada (diálogo como desafío):** cuatro versos del Contramaestre, cada uno con tres remates posibles; solo uno rima y tiene sentido. **Tres errores = Game Over.**
 
 ### Decisiones de jugabilidad
-- **Pistas en el mundo:** el pescador anticipa «mate y chori». El parrillero explica cómo armar el fuego, dice dónde está la leña y que al gato «lo único que lo espanta es el agua». Así ningún puzle depende de probar todo con todo.
+- **Pistas en el mundo:** el pescador anticipa «mate y chori». El asador explica cómo armar el fuego, dice dónde está la leña y que al gato «lo único que lo espanta es el agua». Así ningún puzle depende de probar todo con todo.
 - **Mini-retos por pantalla:** la Rambla tiene la recolección y el diálogo con el pescador; el Mercado, la parrilla (combinar y calcular el tiempo); el Museo, el perro y la payada.
 - **Sin callejones sin salida:** los ítems clave no se pueden perder ni gastar mal. El termo no se gasta al cebar el mate, porque también hace falta para el gato. Un chorizo quemado se reemplaza, y dar el ítem equivocado solo devuelve un chiste.
 - **Perder no castiga de más:** la única forma de perder es la payada. Al perder, **«Reintentar payada»** vuelve al estado guardado justo al aceptar el duelo, sin repetir los tres escenarios.

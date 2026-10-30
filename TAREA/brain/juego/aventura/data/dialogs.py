@@ -64,23 +64,23 @@ def _pescador(ctx):
     }
 
 
-def _parrillero(ctx):
+def _asador(ctx):
     if ctx.inventory.has("choripan") or ctx.has_flag("perro_comido"):
         return {"start": N("Ya tenés tu chori, flaco. A caballo regalado no se le miran los dientes, pero comelo que se enfría.",
-                           "Parrillero", [("Gracias, maestro.", None)])}
+                           "Asador", [("Gracias, maestro.", None)])}
     if ctx.has_flag("parrilla_prendida"):
         return {"start": N("Fuego hay. Ahora asá ese chorizo: ni crudo ni carbón, ¿eh? Y después al pan.",
-                           "Parrillero", [("Dale.", None)])}
+                           "Asador", [("Dale.", None)])}
     return {
         "start": N("Buenas. Si querés chori, el fuego está apagado y yo tengo la muñeca abombada. Prendelo vos.",
-                   "Parrillero", [("¿Cómo prendo el fuego?", "fuego"), ("¿De dónde saco leña?", "lena"),
+                   "Asador", [("¿Cómo prendo el fuego?", "fuego"), ("¿De dónde saco leña?", "lena"),
                                   ("¿Y papel?", "papel"), ("Chau.", None)]),
         "fuego": N("Papel abajo, leña arriba, y lo ponés en la parrilla: yo tiro el fósforo. "
-                   "Con papel solo no alcanza, se apaga en un segundo.", "Parrillero", [("Entendido.", "start")]),
+                   "Con papel solo no alcanza, se apaga en un segundo.", "Asador", [("Entendido.", "start")]),
         "lena": N("Hay una pila ahí abajo... pero el gato duerme encima y no se mueve ni con El Niño. "
-                  "Lo único que lo espanta es el agua.", "Parrillero", [("Mmm, agua...", "start")]),
+                  "Lo único que lo espanta es el agua.", "Asador", [("Mmm, agua...", "start")]),
         "papel": N("Buscá por la rambla. En los tachos siempre hay diarios de ayer.",
-                   "Parrillero", [("Gracias.", "start")]),
+                   "Asador", [("Gracias.", "start")]),
     }
 
 
@@ -129,7 +129,7 @@ def _payada_intro(ctx):
 
 _BUILDERS = {
     "pescador": _pescador,
-    "parrillero": _parrillero,
+    "asador": _asador,
     "contramaestre": _contramaestre,
     "payada_intro": _payada_intro,
 }

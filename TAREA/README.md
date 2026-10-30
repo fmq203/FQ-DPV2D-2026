@@ -96,7 +96,7 @@ Point-and-click al estilo **Monkey Island**: elegís un verbo, después el objet
 <summary>⚠️ <b>Spoiler:</b> cómo se resuelve</summary>
 
 1. **Rambla:** agarrá el **termo** (banco), el **mate** (muro) y el **diario** (tacho). Hablá con el pescador para la pista.
-2. **Mercado:** agarrá la **yerba**. Combiná **yerba + mate** y el resultado con el **termo** para tener un *mate listo*. El gato duerme sobre la leña: **usá el termo con el gato** (odia el agua). **Agarrá la leña**, combiná **diario + leña** y **usá la fogata con la parrilla**: el parrillero te da un chorizo y un pan. **Poné el chorizo en la parrilla** y sacalo cuando Tano diga «¡huele a gloria!» (si esperás de más, se quema). Combiná **chorizo asado + pan** = **chori al pan**.
+2. **Mercado:** agarrá la **yerba**. Combiná **yerba + mate** y el resultado con el **termo** para tener un *mate listo*. El gato duerme sobre la leña: **usá el termo con el gato** (odia el agua). **Agarrá la leña**, combiná **diario + leña** y **usá el fuego con la parrilla**: el asador te da un chorizo y un pan. **Poné el chorizo en la parrilla** y sacalo cuando Tano diga «¡huele a gloria!» (si esperás de más, se quema). Combiná **chorizo asado + pan** = **chori al pan**.
 3. **Tablado:** **dale el chori al perro** (libera el paso) y **el mate listo al Contramaestre**.
 4. **Payada:** cuatro versos, elegí la rima que cierra bien. Con tres errores perdés. Si ganás, **agarrá el bombo**.
 

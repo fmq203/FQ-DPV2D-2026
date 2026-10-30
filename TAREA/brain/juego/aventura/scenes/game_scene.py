@@ -33,7 +33,7 @@ SPEED = 3.2
 IDLE, WALKING, SPEAKING, DIALOGUE = "IDLE", "WALKING", "SPEAKING", "DIALOGUE"
 
 SPEAKER_COLORS = {
-    "Tano": TANO, "Pescador": (120, 220, 170), "Parrillero": (255, 170, 120),
+    "Tano": TANO, "Pescador": (120, 220, 170), "Asador": (255, 170, 120),
     "Contramaestre": (130, 190, 255), "Narrador": (200, 200, 200),
 }
 DEFAULTS = {

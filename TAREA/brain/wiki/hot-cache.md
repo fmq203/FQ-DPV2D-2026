@@ -8,7 +8,7 @@ updated: 2026-10-30
 # Estado actual (2026-10-30)
 
 **Hecho — "El Murguista" completo y jugable** (avance ~95%)
-- 3 escenarios conectados (Rambla de Barrio Sur, Mercado del Puerto, Museo del Carnaval) con zona navegable ([[walkmask]]); verbos + FSM ([[fsm-verbos]]); inventario con combinación ([[inventario-y-combinacion]]); diálogos con opciones y payada ([[sistema-dialogos]]); 3 puzles ([[escenarios-y-puzles]]), incluido el **mini-reto de la parrilla** en el Mercado (gato → leña → fogata → asar el chorizo a tiempo).
+- 3 escenarios conectados (Rambla de Barrio Sur, Mercado del Puerto, Museo del Carnaval) con zona navegable ([[walkmask]]); verbos + FSM ([[fsm-verbos]]); inventario con combinación ([[inventario-y-combinacion]]); diálogos con opciones y payada ([[sistema-dialogos]]); 3 puzles ([[escenarios-y-puzles]]), incluido el **mini-reto de la parrilla** en el Mercado (gato → leña → fuego → asar el chorizo a tiempo).
 - Menú (Comenzar / **Créditos** / Salir), **pausa con ESC** (Continuar / Música / Menú), Game Over con **Reintentar payada**, Victoria.
 - Arte: fondos Pixellab; **personajes, objetos e íconos en pixel art generado por código** (`tools/gen_sprites.py`, PNG editables con LibreSprite). **Música por lugar** generada por código (`tools/gen_musica.py`: menú, Rambla, Mercado, Museo).
 - Entregables: `TAREA/README.md`, **`TAREA/DISENO.md`** (documento de diseño), **`TAREA/video/el-murguista.mp4`** (39,8 s, `tools/grabar_video.py`), [[assets-lista]], [[cambios-al-motor]].

@@ -134,7 +134,7 @@ verbo("Usar"); item("yerba"); item("mate"); esperar(30)            # combinar
 verbo("Usar"); item("mate_cargado"); item("termo"); esperar(30)
 accion("Usar", "gato", con="termo", leer=40)               # mini-reto: espantar al gato
 accion("Agarrar", "lena", leer=0)
-verbo("Usar"); item("diario"); item("lena"); esperar(30)  # fogata armada
+verbo("Usar"); item("diario"); item("lena"); esperar(30)  # fuego armado
 accion("Usar", "parrilla", con="lena_papel", leer=33)
 accion("Usar", "parrilla", con="chorizo", leer=45)
 while not g.current_scene.has_flag("chorizo_a_punto"):   # corte: el chorizo se asa sin grabar

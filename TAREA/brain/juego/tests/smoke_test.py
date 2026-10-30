@@ -146,7 +146,7 @@ def hacer_chori(g, quemar=False):
     s = g.current_scene
     on_hotspot(g, "lena", "Agarrar")
     assert "lena" not in inv(g), "la leña no se puede agarrar con el gato encima"
-    on_hotspot(g, "parrillero", "Dar", "diario")
+    on_hotspot(g, "asador", "Dar", "diario")
     assert "diario" in inv(g), "el papel solo no alcanza"
     on_hotspot(g, "gato", "Usar", "termo")
     assert s.has_flag("gato_mojado") and "termo" in inv(g)
@@ -162,7 +162,7 @@ def hacer_chori(g, quemar=False):
     assert "chorizo_asado" not in inv(g) and s.has_flag("chorizo_en_parrilla")
     if quemar:
         esperar_flag(g, "chorizo_quemado")
-        on_hotspot(g, "parrilla", "Agarrar")  # carbón: el parrillero da otro chorizo
+        on_hotspot(g, "parrilla", "Agarrar")  # carbón: el asador da otro chorizo
         assert "chorizo" in inv(g) and not s.has_flag("chorizo_en_parrilla"), inv(g)
         on_hotspot(g, "parrilla", "Usar", "chorizo")
     esperar_flag(g, "chorizo_a_punto")

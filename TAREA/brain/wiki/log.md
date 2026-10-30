@@ -54,3 +54,4 @@
 - 2026-10-30 | update | assets-lista, arquitectura-juego, video-guion, hot-cache (música por lugar)
 - 2026-10-30 | update | escenarios-y-puzles, inventario-y-combinacion, video-guion, hot-cache (mini-reto de la parrilla)
 - 2026-10-30 | update | escenarios-y-puzles (salidas animadas del gato y el perro)
+- 2026-10-30 | update | escenarios-y-puzles, assets-lista, hot-cache (fogata → fuego, parrillero → asador)
