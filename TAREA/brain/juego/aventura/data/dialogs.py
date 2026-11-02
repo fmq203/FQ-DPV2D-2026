@@ -77,7 +77,7 @@ def _asador(ctx):
                                   ("¿Y papel?", "papel"), ("Chau.", None)]),
         "fuego": N("Papel abajo, leña arriba, y lo ponés en la parrilla: yo tiro el fósforo. "
                    "Con papel solo no alcanza, se apaga en un segundo.", "Asador", [("Entendido.", "start")]),
-        "lena": N("Hay una pila ahí abajo... pero el gato duerme encima y no se mueve ni con El Niño. "
+        "lena": N("Hay una pila ahí abajo... pero el gato duerme encima. "
                   "Lo único que lo espanta es el agua.", "Asador", [("Mmm, agua...", "start")]),
         "papel": N("Buscá por la rambla. En los tachos siempre hay diarios de ayer.",
                    "Asador", [("Gracias.", "start")]),

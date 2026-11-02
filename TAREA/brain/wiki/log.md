@@ -55,3 +55,5 @@
 - 2026-10-30 | update | escenarios-y-puzles, inventario-y-combinacion, video-guion, hot-cache (mini-reto de la parrilla)
 - 2026-10-30 | update | escenarios-y-puzles (salidas animadas del gato y el perro)
 - 2026-10-30 | update | escenarios-y-puzles, assets-lista, hot-cache (fogata → fuego, parrillero → asador)
+- 2026-11-02 | update | mercado: parrilla a la izquierda, asador al lado, puesto de yerba al fondo (perspectiva); capturas y video (42 s) regenerados
+- 2026-11-02 | update | mercado: zona caminable = el piso de piedra gris (trapecio en perspectiva, marcado por el usuario)

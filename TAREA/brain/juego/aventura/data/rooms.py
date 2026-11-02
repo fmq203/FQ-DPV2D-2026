@@ -94,20 +94,22 @@ ROOMS = {
     # ------------------------------------------------------------------ #
     "mercado": {
         "title": "Mercado del Puerto",
-        "walk": [(400, 315, 140, 30), (395, 345, 200, 40), (380, 385, 260, 30), (200, 415, 520, 35)],  # pasillo de piedra
+        "walk": [(330, 330, 215, 12), (315, 342, 250, 10), (300, 352, 300, 12), (288, 364, 340, 12),
+                 (270, 376, 385, 12), (0, 388, 680, 12), (0, 400, 860, 25), (0, 425, 895, 25)],
+        # el piso de piedra gris: un trapecio que se angosta hacia el fondo (perspectiva)
         "start": (230, 430),
         "hotspots": [
-            {"id": "yerbas", "name": "Puesto de yerba", "rect": (100, 260, 120, 80),
-             "stand": (240, 432), "art": ("marker", (60, 200, 80)),  # sin sprites/yerbas.png: rectángulo «FALTA»
+            {"id": "yerbas", "name": "Puesto de yerba", "rect": (510, 286, 64, 44),
+             "stand": (468, 336), "art": ("marker", (60, 200, 80)),  # al fondo: chico por la perspectiva
              "acts": {
-                 "Mirar": "Un puesto con paquetes de yerba hasta el techo. Hay para toda la nación. Algo húmeda: culpa de El Niño.",
+                 "Mirar": "Un puesto con paquetes de yerba hasta el techo. Hay para toda la nación. Algo húmeda: lo que mata es la humedad.",
                  "Hablar": "El vendedor está dormido, con la boca abierta. En boca cerrada no entran moscas, pero a él sí.",
                  "Agarrar": {"give": "yerba", "flag": "yerba_cogida", "if_flag_not": "yerba_cogida",
                            "say": "Tomo un paquete de yerba. Dejo unos pesos en el mostrador.",
                            "else": "Con un paquete alcanza. No soy un acaparador."},
              }},
-            {"id": "parrilla", "name": "Parrilla", "rect": (395, 262, 140, 55),
-             "stand": (460, 420), "art": ("marker", (220, 50, 50)),  # sin sprites/parrilla.png: rectángulo «FALTA»
+            {"id": "parrilla", "name": "Parrilla", "rect": (15, 272, 120, 55),
+             "stand": (95, 405), "art": ("marker", (220, 50, 50)),  # se ve uno de los sprites parrilla*.png según el estado
              "sprite_if": [("parrilla_prendida", "parrilla_prendida"),       # gana la última que se cumple
                            ("chorizo_en_parrilla", "parrilla_chorizo_crudo"),
                            ("chorizo_a_punto", "parrilla_chorizo_a_punto"),
@@ -143,8 +145,8 @@ ROOMS = {
                                       "else": "¿Agarrar la parrilla? Es sagrada... y quema."}}},
                  "Usar": "No me dejan tocar la parrilla. Es sagrada.",
              }},
-            {"id": "asador", "name": "Asador", "rect": (520, 300, 60, 95),
-             "stand": (540, 420), "art": ("person", (240, 240, 235)),
+            {"id": "asador", "name": "Asador", "rect": (140, 305, 55, 88),
+             "stand": (200, 425), "art": ("person", (240, 240, 235)),
              "acts": {
                  "Mirar": "El asador, con delantal de campeón y cara de pocos amigos.",
                  "Hablar": {"talk": "asador"},
@@ -162,7 +164,7 @@ ROOMS = {
              "acts": {
                  "Mirar": "Ropa colgada desde que empezó la primavera, todo atadito con alambre. Sigue mojada. Una media ya echó raíces.",
                  "Agarrar": "Agarro una remera: está más mojada que antes de colgarla.",
-                 "Usar": "Intento secar algo. El Niño se ríe de mí.",
+                 "Usar": "Intento secar algo. La humedad se ríe de mí.",
                  "Hablar": "Le hablo a la ropa. Gotea con indiferencia.",
              }},
             {"id": "lena", "name": "Leña", "rect": (538, 400, 84, 30),
@@ -173,7 +175,7 @@ ROOMS = {
                  "Mirar": {"if_flag": "gato_mojado", "say": "Una pila de leña seca: lo único seco en todo Montevideo.",
                            "else": "Una pila de leña seca... con un gato durmiendo arriba."},
                  "Agarrar": {"give": "lena", "flag": "lena_cogida",
-                             "say": "Agarro un par de troncos. Bien secos: un milagro con El Niño."},
+                             "say": "Agarro un par de troncos. Bien secos: un milagro."},
              }},
             {"id": "gato", "name": "Gato", "rect": (548, 392, 62, 40),
              "stand": (600, 442), "art": ("cat", (200, 130, 60)), "hide_if": "gato_mojado",
@@ -184,7 +186,7 @@ ROOMS = {
                  "Agarrar": "Me mira con desprecio felino. Y no se mueve de arriba de la leña.",
                  "Usar:termo": {"flag": "gato_mojado", "sound": "nope",
                                 "say": ["Le tiro un chorrito de agua del termo... tibia, tranquilo.",
-                                        "¡El gato sale disparado! Odia el agua más que yo a El Niño.",
+                                        "¡El gato sale disparado! Odia el agua más que yo a la lluvia.",
                                         "Y queda agua para el mate. Todo bien."]},
                  "Dar:chorizo": "¿Darle el chorizo al gato? Ni loco: ese es el almuerzo del perro.",
              }},

@@ -60,7 +60,7 @@ Point-and-click al estilo **Monkey Island**: elegís un verbo, después el objet
 
 ## 🎬 Video
 
-▶️ [**Ver el video del juego**](video/el-murguista.mp4) (40 s): una partida completa, de la Rambla a la victoria.
+▶️ [**Ver el video del juego**](video/el-murguista.mp4) (42 s): una partida completa, de la Rambla a la victoria.
 
 ---
 
@@ -146,7 +146,7 @@ python tests/smoke_test.py
 | Fondos | ✅ pixel art (los 4) |
 | Sprites de personajes y objetos | ✅ pixel art por código (retoques a mano pendientes) |
 | Música | ✅ un tema por lugar |
-| Video de 15 a 40 s | ✅ [40 s](video/el-murguista.mp4) |
+| Video de 15 a 40 s | ✅ [42 s](video/el-murguista.mp4) |
 | Mini-retos por pantalla (sugerencia del docente) | ✅ parrilla en el Mercado |
 | Documento de diseño | ✅ [DISENO.md](DISENO.md) |
 <!-- ESTADO:FIN -->
@@ -165,7 +165,7 @@ python tests/smoke_test.py
 TAREA/
 ├── README.md              ← este archivo
 ├── DISENO.md              ← documento de diseño
-├── video/                 ← video de 40 s (tools/grabar_video.py)
+├── video/                 ← video de 42 s (tools/grabar_video.py)
 ├── capturas/              ← capturas del juego (se regeneran con tools/capturas.py)
 └── brain/
     ├── juego/             ← el juego (engine/ + aventura/ + tests/)
