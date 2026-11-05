@@ -18,7 +18,8 @@ updated: 2026-10-30
 | Fondo del menú (Palacio Salvo) | `juego/aventura/assets/fondos/menu.png` | Pixel art 344×192 creado por el usuario con **Pixellab** (confirmar términos/licencia) |
 | click/pickup/win/lose .wav | `juego/aventura/assets/audio/` | Generados por código (ondas senoidales, `wave`) el 2026-10-25: sin licencia externa |
 | talk/combine/nope/bombo .wav | `juego/aventura/assets/audio/` | Generados por `tools/gen_sonidos.py` (ondas por código): sin licencia externa |
+| Efectos de objetos y voces (≈35 grabaciones): agarrar_*, apoyar_*, usar_* (banco, gato, tendedero), hablar_* (personajes y animales), tirar_papel, poner_chorizo, gato_mojado, perro_come_chori, tomada_mate, payada_acierto, payada_error, victoria_murga, voz_asador_1..3, voz_pescador_1..3, voz_contramaestre_1..3 .wav | `juego/aventura/assets/audio/` | **Grabaciones propias** de `@ine.coira` (originales .m4a en `audio/originales/`, fuera del repo), recortadas y normalizadas con `tools/procesar_audios.py` el 2026-11-04: sin licencia externa |
 | musica_menu / musica_rambla / musica_mercado / musica_tablado .wav (loops de 7–13 s: retirada de murga, rambla lluviosa, candombe, marcha camión) | `juego/aventura/assets/audio/` | Sintetizadas por `tools/gen_musica.py` (tambores, platillo, lluvia y melodías por código) el 2026-10-30: sin licencia externa |
-| Video de entrega | `TAREA/video/el-murguista.mp4` | Grabado por `tools/grabar_video.py` con las imágenes del juego, la música de cada lugar y `win.wav` |
+| Video de entrega | `TAREA/video/el-murguista.mp4` | Grabado por `tools/grabar_video.py` con las imágenes del juego, la música de cada lugar y `victoria_murga.wav` |
 | Asistencia de IA en código y diseño | — | Claude Sonnet 5.5 y Claude Opus 5.5 (Anthropic); declarado en los Créditos del juego, el README y `DISENO.md` |
 Completar con URL y licencia de cada uno antes de entregar.

@@ -117,7 +117,7 @@ flowchart TD
 
 ## 5. Pantallas y flujo
 
-**Menú** (Comenzar Juego · Créditos · Salir) → **Juego** (ESC: Continuar · Música Sí/No · Volver al menú) → **Victoria** o **Game Over** (Reintentar payada · Volver al menú). Los **créditos** se leen de una lista de datos (`aventura/data/creditos.py`), así que es fácil sumar gente.
+**Menú** (Comenzar juego · Créditos · Salir) → **Juego** (ESC: Continuar · Música Sí/No · Volver al menú) → **Victoria** o **Game Over** (Reintentar payada · Volver al menú). Los **créditos** se leen de una lista de datos (`aventura/data/creditos.py`), así que es fácil sumar gente.
 
 ## 6. Arquitectura técnica
 
@@ -143,6 +143,7 @@ Todos están marcados en el código con `# [Tarea 2026]`.
 | Fondos (menú, Rambla, Mercado, Museo) | Pixel art generado con **Pixellab.ai** (IA) |
 | Personajes, objetos e íconos | Pixel art generado por código (`tools/gen_sprites.py`); PNG editables |
 | Música (un tema por lugar) y efectos de sonido | Sintetizados por código (`tools/gen_musica.py`, `tools/gen_sonidos.py`) |
+| Sonidos de agarrar, apoyar y tirar objetos | Grabaciones propias, procesadas con `tools/procesar_audios.py` |
 | Código y diseño | Desarrollo propio con asistencia de **Claude Sonnet 5.5 y Claude Opus 5.5** (Anthropic) |
 
 La lista completa con el origen de cada archivo está en [`brain/wiki/entrega/assets-lista.md`](brain/wiki/entrega/assets-lista.md).

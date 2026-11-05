@@ -89,7 +89,7 @@ def choose(g, text_start):
 
 def start_game(g):
     w = g.screen.get_width()
-    step(g, [click((w // 2, 320))], n=3)  # botón "Comenzar Juego"
+    step(g, [click((w // 2, 320))], n=3)  # botón "Comenzar juego"
     assert scene(g) == "GameScene", scene(g)
     settle(g)
 
@@ -109,6 +109,8 @@ def go_to_tablado(g, quemar=False):
     on_hotspot(g, "a_mercado", "Mirar")
     assert g.state.room == "mercado", g.state.room
     assert g.music_track == "mercado", g.music_track  # cada lugar con su tema
+    for snd in ("agarrar_termo", "agarrar_mate", "agarrar_yerba", "agarrar_diario", "apoyar_mate", "apoyar_termo", "tirar_papel"):
+        assert snd in g.audio.sounds, f"falta el sonido {snd}.wav"  # grabaciones propias cargadas
     on_hotspot(g, "yerbas", "Agarrar")
     combine(g, "yerba", "mate")
     assert "mate_cargado" in inv(g) and "yerba" not in inv(g), inv(g)

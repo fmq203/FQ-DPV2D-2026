@@ -13,7 +13,7 @@ class MenuScene(Scene):
                                        "Una aventura gráfica en Montevideo", (240, 240, 255))
         w = game.screen.get_width()
         self.buttons = [
-            SoundButton(game, w // 2 - 130, 300, 260, 56, "Comenzar Juego", game.new_game),
+            SoundButton(game, w // 2 - 130, 300, 260, 56, "Comenzar juego", game.new_game),
             SoundButton(game, w // 2 - 130, 370, 260, 56, "Créditos", lambda: game.change_scene("credits")),
             SoundButton(game, w // 2 - 130, 440, 260, 56, "Salir", self.quit),
         ]

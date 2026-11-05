@@ -49,5 +49,5 @@ class GameOverScene(_EndScene):
 
 
 class VictoryScene(_EndScene):
-    TEXT, COLOR, SOUND = "¡VICTORIA!", (255, 215, 0), "win"
+    TEXT, COLOR, SOUND = "¡VICTORIA!", (255, 215, 0), "victoria_murga"
     SUB = "¡Uruguay nomá! Recuperaste el bombo: que empiece el Carnaval."

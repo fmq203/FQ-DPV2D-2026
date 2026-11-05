@@ -107,11 +107,11 @@ def _payada_intro(ctx):
                            action=(lambda nd: ctx.game.save_checkpoint()) if i == 0 else None)
         nxt = f"r{i + 1}" if i + 1 < n else "gana"
         nodes[f"r{i}_ok"] = N(OK_FRASES[i % len(OK_FRASES)], "Contramaestre", [("(Seguir)", nxt)],
-                              action=lambda nd: ctx.play("combine"))
+                              action=lambda nd: ctx.play("payada_acierto"))
 
         def mal(nd, nxt=nxt, i=i):
             ctx.state.lives -= 1
-            ctx.play("nope")
+            ctx.play("payada_error")
             if ctx.state.lives <= 0:
                 nd.text = "¡Vayan pelando las chauchas! Se acabó, pibe: ¡afuera del tablado!"
                 nd.choices = [("(...)", "pierde")]

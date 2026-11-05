@@ -15,6 +15,9 @@ ITEMS = {
     "choripan":     ("Chori al pan",  "Un chori al pan recién salido de la parrilla. Huele a gloria."),
 }
 
+# Sonido al combinar, según el ítem resultante (si no está, suena "combine").
+RECIPE_SOUNDS = {"mate_cargado": "apoyar_mate", "mate_listo": "apoyar_termo"}
+
 # {frozenset({a, b}): (resultado, mensaje[, ítems que se conservan])}.
 # Puzle del mate (2 pasos) y del chori (fuego + armado). El termo no se gasta al cebar: también sirve con el gato.
 RECIPES = {

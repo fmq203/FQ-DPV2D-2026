@@ -177,7 +177,8 @@ TAREA/
 
 - **Fondos:** pixel art creado con IA mediante **[Pixellab.ai](https://www.pixellab.ai)** (Rambla, Mercado, Museo y menú).
 - **Personajes y objetos:** pixel art generado por código (`brain/tools/gen_sprites.py`).
-- **Música y sonidos:** sintetizados por código, sin licencias externas.
+- **Música:** sintetizada por código, sin licencias externas.
+- **Voces y sonidos de objetos** (agarrar, apoyar, gato, perro, payada, victoria...): grabaciones de `@ine.coira` (Instagram).
 - **Asistencia de programación y diseño:** Claude Sonnet 5.5 y Claude Opus 5.5 (Anthropic).
 - **Motor:** el del curso Videojuegos 2D 2026.
 - Los créditos también están en el juego (menú → **Créditos**).

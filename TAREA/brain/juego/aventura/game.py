@@ -47,8 +47,12 @@ class AventuraGame(Game):
         for room in ("menu", "rambla", "mercado", "tablado"):
             self.assets.images[f"bg_{room}"] = art.make_background(
                 room, (ANCHO, ALTO) if room == "menu" else (art.W, art.H))
-        for name in ("click", "pickup", "win", "lose", "talk", "combine", "nope", "bombo"):
-            self.audio.load_sound(name, os.path.join(self.assets_dir, "audio", f"{name}.wav"))
+        # Todos los .wav de assets/audio (menos la música): los de tools/gen_sonidos.py y las grabaciones
+        # propias (tools/procesar_audios.py). El nombre del archivo es el nombre del sonido.
+        audio_dir = os.path.join(self.assets_dir, "audio")
+        for fname in sorted(os.listdir(audio_dir)):
+            if fname.endswith(".wav") and not fname.startswith("musica_"):
+                self.audio.load_sound(fname[:-4], os.path.join(audio_dir, fname))
 
     # ---------------------------------------------------------------- música
     def play_music(self, track):

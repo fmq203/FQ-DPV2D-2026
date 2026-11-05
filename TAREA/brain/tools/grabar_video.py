@@ -164,9 +164,11 @@ tick(n=75)                                              # pantalla de Victoria
 # ------------------------------------------------------------------ exportar
 def leer_wav(nombre):
     with wave.open(os.path.join(AUDIO, nombre)) as w:
-        assert w.getframerate() == RATE and w.getnchannels() == 1 and w.getsampwidth() == 2, nombre
+        assert w.getnchannels() == 1 and w.getsampwidth() == 2 and w.getframerate() in (RATE, 2 * RATE), nombre
+        doble = w.getframerate() == 2 * RATE  # las grabaciones propias son de 44,1 kHz: se baja a la mitad
         datos = w.readframes(w.getnframes())
-    return [v / 32768 for v in struct.unpack(f"<{len(datos) // 2}h", datos)]
+    v = [x / 32768 for x in struct.unpack(f"<{len(datos) // 2}h", datos)]
+    return [(v[i] + v[i + 1]) / 2 for i in range(0, len(v) - 1, 2)] if doble else v
 
 
 def banda_sonora(ruta):
@@ -191,7 +193,7 @@ def banda_sonora(ruta):
             out.extend([0.0] * por_frame)
         anterior = pista
     if jingle is not None:
-        for k, v in enumerate(leer_wav("win.wav")):
+        for k, v in enumerate(leer_wav("victoria_murga.wav")):
             if jingle + k < len(out):
                 out[jingle + k] += v * 0.8
     with wave.open(ruta, "wb") as w:

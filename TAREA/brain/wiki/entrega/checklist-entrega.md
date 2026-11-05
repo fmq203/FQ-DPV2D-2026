@@ -8,7 +8,7 @@ updated: 2026-10-30
 # Checklist de entrega (6-nov-2026)
 
 - [ ] Repo GitLab **público** con código (sin `.venv`, `.idea`) — hoy está en GitHub: **gap**, confirmar con el docente si sirve o crear espejo en GitLab
-- [x] Menú con "Comenzar Juego" · [x] Game Over → menú (+ reintentar payada) · [x] Victoria → menú · [x] Créditos
+- [x] Menú con "Comenzar juego" · [x] Game Over → menú (+ reintentar payada) · [x] Victoria → menú · [x] Créditos
 - [x] Verbos · [x] Inventario + combinación · [x] ≥3 escenarios · [x] Zonas navegables · [x] Diálogos múltiples · [x] ≥2 puzles (3)
 - [x] FSM · [x] Hotspots · [x] DialogueManager + barra inferior
 - [x] Sonido en toda interacción de UI · [x] Música de fondo

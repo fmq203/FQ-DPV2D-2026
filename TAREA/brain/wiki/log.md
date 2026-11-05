@@ -57,3 +57,11 @@
 - 2026-10-30 | update | escenarios-y-puzles, assets-lista, hot-cache (fogata → fuego, parrillero → asador)
 - 2026-11-02 | update | mercado: parrilla a la izquierda, asador al lado, puesto de yerba al fondo (perspectiva); capturas y video (42 s) regenerados
 - 2026-11-02 | update | mercado: zona caminable = el piso de piedra gris (trapecio en perspectiva, marcado por el usuario)
+- 2026-11-04 | update | assets-lista, sonidos de objetos: grabaciones propias (agarrar_*, apoyar_*, tirar_papel) conectadas al juego; tools/procesar_audios.py
+- 2026-11-04 | update | audio: el juego carga todo .wav de assets/audio; voces opcionales voz_<personaje> y <verbo>_<id del hotspot> (hablar_perro, etc.)
+- 2026-11-04 | update | assets-lista: 14 grabaciones nuevas (voces de personajes y animales, leña, chorizo, gato mojado) conectadas
+- 2026-11-04 | update | audio: payada_acierto/error, victoria_murga, perro_come_chori, voces con variantes al azar (voz_tano_N, voz_contramaestre_N); cortados 0,5 s de los largos
+- 2026-11-04 | update | Tano habla sin voz ni blip (repetitivo); voz_tano descartadas (originales/sin_usar)
+- 2026-11-04 | update | tomada_mate al darle el mate al Contramaestre
+- 2026-11-04 | update | voz 1 pasa a ser la voz del pescador (voz_pescador_1..3)
+- 2026-11-04 | update | voz 3 = voz del asador (voz_asador_1..3)

@@ -9,6 +9,7 @@ Máquina de estados (FSM) de la interacción:
 Dentro de IDLE/WALKING se arma el comando: verbo → [ítem] → objetivo ("Usar termo con mate").
 """
 import math
+import random
 
 import pygame
 
@@ -22,7 +23,7 @@ from engine.walkmask import WalkMask
 from aventura import art
 from aventura.ui import SoundButton
 from aventura.data import dialogs
-from aventura.data.items import ITEMS, RECIPES
+from aventura.data.items import ITEMS, RECIPES, RECIPE_SOUNDS
 from aventura.data.rooms import ROOMS, TANO, TIMERS
 
 BAR_Y = 450  # la barra de verbos/inventario ocupa y >= 450
@@ -174,7 +175,11 @@ class GameScene(Scene):
                                        color=SPEAKER_COLORS.get(speaker, (255, 255, 255)),
                                        center_at=self._anchor(speaker))
             self.speaker = speaker
-            self.play("talk")
+            # voz grabada del personaje (opcional): voz_<nombre>.wav o varias variantes voz_<nombre>_1.wav...
+            voz = f"voz_{speaker.lower()}"
+            variantes = [k for k in self.game.audio.sounds if k == voz or k.startswith(voz + "_")]
+            if speaker != "Tano":  # el protagonista habla en silencio: su voz cansaba por repetida
+                self.play(random.choice(variantes) if variantes else "talk")
             return
         self.fsm = IDLE
         after, self.after = self.after, None
@@ -222,7 +227,10 @@ class GameScene(Scene):
             self.state.timers[res["timer"]] = self.state.clock
         if res.get("timer_stop"):
             self.state.timers.pop(res["timer_stop"], None)
-        sound = res.get("sound") or ("pickup" if res.get("give") else None)
+        gave = [res["give"]] if isinstance(res.get("give"), str) else res.get("give", [])
+        # al agarrar un ítem con grabación propia (agarrar_<ítem>.wav) suena esa; si no, el "pickup" genérico
+        pickup = f"agarrar_{gave[0]}" if gave and f"agarrar_{gave[0]}" in self.game.audio.sounds else "pickup"
+        sound = res.get("sound") or (pickup if gave else None)
         if sound:
             self.play(sound)
 
@@ -271,6 +279,10 @@ class GameScene(Scene):
                 self.play("nope")
             else:
                 res = DEFAULTS[verb].format(n=d["name"])
+        # voz del hotspot (opcional): <verbo>_<id>.wav, ej. hablar_perro.wav (gruñido) o hablar_gato.wav (maullido)
+        voz = f"{verb.lower()}_{d['id']}"
+        if voz in self.game.audio.sounds and not (isinstance(res, dict) and (res.get("give") or res.get("sound"))):
+            self.play(voz)
         self.apply(res)
 
     def _inventory_click(self, item):
@@ -282,8 +294,8 @@ class GameScene(Scene):
             if self.verb == "Usar":
                 result = self.inventory.combine(first, key, self.recipes)
                 if result:
-                    self.play("combine")
                     recipe = RECIPES[frozenset((first, key))]
+                    self.play(RECIPE_SOUNDS.get(recipe[0], "combine"))
                     for kept in recipe[2] if len(recipe) > 2 else ():
                         self.give(kept)  # ej. el termo sigue en el inventario después de cebar
                     return self.say(recipe[1])
