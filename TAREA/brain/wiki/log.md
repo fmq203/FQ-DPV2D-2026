@@ -65,3 +65,4 @@
 - 2026-11-04 | update | tomada_mate al darle el mate al Contramaestre
 - 2026-11-04 | update | voz 1 pasa a ser la voz del pescador (voz_pescador_1..3)
 - 2026-11-04 | update | voz 3 = voz del asador (voz_asador_1..3)
+- 2026-11-04 | update | video con efectos y voces mezclados (89 efectos), banda sonora con limitador

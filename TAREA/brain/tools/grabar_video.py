@@ -1,7 +1,7 @@
 """Graba el video de entrega (15–40 s) jugando una partida guionada, sin ventana.
 Sigue wiki/entrega/video-guion.md: menú -> Rambla (agarrar, diálogo) -> Mercado (combinar, dar)
 (gato, fuego y chorizo a punto) -> Museo del Carnaval (payada) -> Victoria. Las caminatas van al doble de velocidad y hay cortes
-en las partes lentas. De fondo va la música de cada lugar y el jingle de victoria (los demás efectos no se graban).
+en las partes lentas. De fondo va la música de cada lugar y encima los efectos y voces que suenan en la partida.
 Requiere imageio-ffmpeg en el venv:  juego/.venv/bin/pip install imageio-ffmpeg
 Uso (desde brain/): juego/.venv/bin/python tools/grabar_video.py  -> TAREA/video/el-murguista.mp4"""
 import os
@@ -38,12 +38,26 @@ from aventura.scenes import game_scene as gs  # noqa: E402
 frames_dir = tempfile.mkdtemp(prefix="murguista_")
 n_frame, n_tick = [0], [0]
 pistas = []
+efectos = []  # (segundo del video, nombre del sonido) de cada efecto que se dispara mientras se graba
+ahora = {"grabar": False, "cada": 2}
 g = t.AventuraGame()
+_play_original = g.audio.play_sound
+
+
+def _play_registrado(name, loops=0):
+    if ahora["grabar"]:
+        frame = n_frame[0] + (n_tick[0] % ahora["cada"]) / ahora["cada"]
+        efectos.append((frame / FPS, name))
+    _play_original(name, loops)
+
+
+g.audio.play_sound = _play_registrado
 
 
 def tick(events=(), n=1, grabar=True, cada=2):
     for e in events:
         pygame.event.post(e)
+    ahora["grabar"], ahora["cada"] = grabar, cada
     for _ in range(n):
         _ticks[0] += 1000 // 60
         g._handle_events()
@@ -173,29 +187,31 @@ def leer_wav(nombre):
 
 def banda_sonora(ruta):
     """Arma el audio siguiendo el tema que sonaba en cada frame (como en el juego: al cambiar de
-    lugar el tema nuevo arranca de cero con fundido de entrada); al terminar la música, el jingle de victoria."""
+    lugar el tema nuevo arranca de cero con fundido de entrada) y mezcla encima los efectos y voces que sonaron."""
     temas, out = {}, []
     por_frame = RATE // FPS
-    anterior, pos, jingle = None, 0, None
+    anterior, pos = None, 0
     for pista in pistas:
         if pista != anterior:
-            if pista is None and anterior is not None:
-                jingle = len(out)
             pos = 0
         if pista:
             temas.setdefault(pista, leer_wav(f"musica_{pista}.wav"))
             muestras = temas[pista]
             for _ in range(por_frame):
                 fade = min(1, pos / (RATE * 0.9))
-                out.append(muestras[pos % len(muestras)] * 0.6 * fade)
+                out.append(muestras[pos % len(muestras)] * 0.35 * fade)
                 pos += 1
         else:
             out.extend([0.0] * por_frame)
         anterior = pista
-    if jingle is not None:
-        for k, v in enumerate(leer_wav("victoria_murga.wav")):
-            if jingle + k < len(out):
-                out[jingle + k] += v * 0.8
+    cache = {}
+    for segundo, nombre in efectos:  # los efectos y voces se mezclan en el momento exacto en que sonaron
+        if not os.path.isfile(os.path.join(AUDIO, f"{nombre}.wav")):
+            continue
+        inicio = int(segundo * RATE)
+        for k, v in enumerate(cache.setdefault(nombre, leer_wav(f"{nombre}.wav"))):
+            if inicio + k < len(out):
+                out[inicio + k] += v * 0.6
     with wave.open(ruta, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
@@ -212,8 +228,8 @@ cmd = [imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error",
        "-i", audio,
        "-map", "0:v", "-map", "1:a", "-shortest",
        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20",
-       "-c:a", "aac", "-b:a", "128k", "-af", f"afade=t=out:st={max(0, duracion - 1.5):.2f}:d=1.5", SALIDA]
+       "-c:a", "aac", "-b:a", "128k", "-af", f"afade=t=out:st={max(0, duracion - 1.5):.2f}:d=1.5,alimiter=limit=0.8:level=0", SALIDA]
 subprocess.run(cmd, check=True)
 shutil.rmtree(frames_dir)
 pygame.quit()
-print(f"OK {SALIDA}  ({duracion:.1f} s, {n_frame[0]} frames)")
+print(f"OK {SALIDA}  ({duracion:.1f} s, {n_frame[0]} frames, {len(efectos)} efectos de sonido)")
